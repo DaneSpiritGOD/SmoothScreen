@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -20,16 +21,20 @@ namespace SmoothScreen
 				logger.Info("A instance is already running. Quit...");
 				return;
 			}
-			
-			try
+
+			using var copy = disposable;
+			Hook.GlobalEvents().MouseMove += Program_MouseMove;
+
+			using var context = new ApplicationContext();
+			Hook.GlobalEvents().OnSequence(new Dictionary<Sequence, Action>
 			{
-				Hook.GlobalEvents().MouseMove += Program_MouseMove;
-				Application.Run();
-			}
-			finally
-			{
-				disposable.Dispose();
-			}
+				[Sequence.FromString("Control+B, Control+B")] = () =>
+				{
+					context.ExitThread();
+					logger.Info("Receive temination signal, quiting...");
+				}
+			});
+			Application.Run(context);
 		}
 
 		private static void Program_MouseMove(object sender, MouseEventArgs e)
