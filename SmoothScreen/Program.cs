@@ -4,19 +4,20 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using Gma.System.MouseKeyHook;
+using NLog;
 
 namespace SmoothScreen
 {
 	class Program
 	{
 		static readonly MouseState lastState = new MouseState();
-
-		// TODO: introduce NLog
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		static void Main(string[] _)
 		{
 			if (!SingleApplicationInstance.CanEnter(out var disposable))
 			{
+				logger.Info("A instance is already running. Quit...");
 				return;
 			}
 			
@@ -34,7 +35,7 @@ namespace SmoothScreen
 		private static void Program_MouseMove(object sender, MouseEventArgs e)
 		{
 			lastState.Point = e.Location;
-			Debug.WriteLine(e.Location);
+			logger.Debug(e.Location);
 			//if (e.X > 1000 && e.X < 1500)
 			//{
 			//	Cursor.Position = new Point(e.X + 10, e.Y);
