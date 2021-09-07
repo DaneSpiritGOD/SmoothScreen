@@ -17,10 +17,15 @@ namespace SmoothScreen.Test
 		{
 			SingleApplicationInstance.CanEnter(out var disposable);
 
-			Assert.That(SingleApplicationInstance.CanEnter(out var disposable2), Is.False);
-			Assert.That(disposable2, Is.Null);
-
-			disposable.Dispose();
+			try
+			{ 
+				Assert.That(SingleApplicationInstance.CanEnter(out var disposable2), Is.False);
+				Assert.That(disposable2, Is.Null);
+			}
+			finally
+			{
+				disposable.Dispose();
+			}
 		}
 	}
 }
