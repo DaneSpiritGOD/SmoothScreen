@@ -22,9 +22,30 @@ namespace SmoothScreen
 				return;
 			}
 
-			using var copy = disposable;
-			Hook.GlobalEvents().MouseMove += Program_MouseMove;
+			HookEvents();
+			try 
+			{ 
+				Run();
+			}
+			finally
+			{
+				UnhookEvents();
+				disposable.Dispose();
+			}
+		}
 
+		static void HookEvents()
+		{
+			Hook.GlobalEvents().MouseMove += Program_MouseMove;
+		}
+
+		static void UnhookEvents()
+		{
+			Hook.GlobalEvents().MouseMove -= Program_MouseMove;
+		}
+
+		static void Run()
+		{
 			using var context = new ApplicationContext();
 			Hook.GlobalEvents().OnSequence(new Dictionary<Sequence, Action>
 			{
@@ -41,10 +62,6 @@ namespace SmoothScreen
 		{
 			lastState.Point = e.Location;
 			logger.Debug(e.Location);
-			//if (e.X > 1000 && e.X < 1500)
-			//{
-			//	Cursor.Position = new Point(e.X + 10, e.Y);
-			//}
 		}
 	}
 }
