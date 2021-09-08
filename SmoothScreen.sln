@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmoothScreen", "SmoothScreen\SmoothScreen.csproj", "{B5C67750-DFBD-4DAD-A088-EABC4BA3BAD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmoothScreen.Test", "SmoothScreen.Test\SmoothScreen.Test.csproj", "{C7F08141-A9BE-459C-9DB5-6B7E02A86889}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmoothScreen.Test", "SmoothScreen.Test\SmoothScreen.Test.csproj", "{C7F08141-A9BE-459C-9DB5-6B7E02A86889}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CDDD682B-639E-4B99-A619-7C139B5451A7}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.md = ReadMe.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -28,7 +28,7 @@ namespace SmoothScreen
 			using var context = new ApplicationContext();
 			Hook.GlobalEvents().OnSequence(new Dictionary<Sequence, Action>
 			{
-				[Sequence.FromString("Control+B, Control+B")] = () =>
+				[Sequence.FromString("Control+Alt+B, Control+Alt+B")] = () =>
 				{
 					context.ExitThread();
 					logger.Info("Receive temination signal, quiting...");
