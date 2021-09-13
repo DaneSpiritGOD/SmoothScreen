@@ -52,7 +52,7 @@ namespace SmoothScreen
 				[Sequence.FromString("Control+Alt+B, Control+Alt+B")] = () =>
 				{
 					context.ExitThread();
-					logger.Info("Receive temination signal, quiting...");
+					logger.Info("Receive termination signal, quiting...");
 				}
 			});
 			Application.Run(context);

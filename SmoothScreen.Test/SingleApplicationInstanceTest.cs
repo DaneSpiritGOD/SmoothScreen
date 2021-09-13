@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace SmoothScreen.Test
 {
-	public class Tests
+	public class SingleApplicationInstanceTest
 	{
 		[Test]
 		public void TestCanEnter()
