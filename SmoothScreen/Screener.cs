@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace SmoothScreen
 {
@@ -27,7 +26,9 @@ namespace SmoothScreen
 		readonly Rectangle leftRect;
 #endif
 
-		public Screener(Rectangle screenBounds, int closeToBorderThreshold)
+		public static readonly Screener None = new Screener(new Rectangle(0, 0, 1, 1), 0);
+
+		internal Screener(Rectangle screenBounds, int closeToBorderThreshold)
 		{
 			this.screenBounds = screenBounds;
 
@@ -80,5 +81,10 @@ namespace SmoothScreen
 		}
 
 		public bool Own(Point point) => screenBounds.Contains(point);
+
+		public override string ToString() => this == None ? nameof(None) : screenBounds.ToString();
+
+		public override bool Equals(object obj) => obj is Screener screener && screenBounds.Equals(screener.screenBounds);
+		public override int GetHashCode() => System.HashCode.Combine(screenBounds);
 	}
 }

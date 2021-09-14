@@ -12,7 +12,8 @@ namespace SmoothScreen
 	class Program
 	{
 		static readonly MouseState lastState = new MouseState();
-		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+		static readonly Logger logger = LogManager.GetCurrentClassLogger();
+		static ScreenCollection screens;
 
 		static void Main(string[] _)
 		{
@@ -22,6 +23,7 @@ namespace SmoothScreen
 				return;
 			}
 
+			screens = new ScreenCollection(Screen.AllScreens, 5);
 			HookEvents();
 			try 
 			{ 
@@ -62,6 +64,7 @@ namespace SmoothScreen
 		{
 			lastState.Point = e.Location;
 			logger.Debug(e.Location);
+			logger.Debug(screens.GetOwner(e.Location));
 		}
 	}
 }

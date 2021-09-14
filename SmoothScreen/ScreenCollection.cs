@@ -37,7 +37,7 @@ namespace SmoothScreen
 					return screen;
 			}
 
-			throw new NotImplementedException();
+			return Screener.None;
 		}
 	}
 }
