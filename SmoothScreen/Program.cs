@@ -64,7 +64,7 @@ namespace SmoothScreen
 
 		private static void Program_MouseMove(object sender, MouseEventArgs e)
 		{
-			lastState.Point = e.Location;
+			//lastState.Point = e.Location;
 			logger.Debug(e.Location);
 			logger.Debug(manager.GetOwner(e.Location));
 		}
