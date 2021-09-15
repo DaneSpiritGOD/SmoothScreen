@@ -63,22 +63,22 @@ namespace SmoothScreen
 			switch (point)
 			{
 				case var pt when _topRect.Contains(pt):
-					return TopBorder;
+					return topBorder;
 				case var pt when _rightRect.Contains(pt):
-					return RightBorder;
+					return rightBorder;
 				case var pt when _bottomRect.Contains(pt):
-					return BottomBorder;
+					return bottomBorder;
 				case var pt when _leftRect.Contains(pt):
-					return LeftBorder;
+					return leftBorder;
 
 				case var pt when _topLeftRect.Contains(pt):
-					return pt.X - _topLeftRect.Left > pt.Y - _topLeftRect.Top ? TopBorder : LeftBorder;
+					return pt.X - _topLeftRect.Left > pt.Y - _topLeftRect.Top ? topBorder : leftBorder;
 				case var pt when _topRightRect.Contains(pt):
-					return _topRightRect.Right - 1 - pt.X > pt.Y - _topRightRect.Top ? TopBorder : RightBorder;
+					return _topRightRect.Right - 1 - pt.X > pt.Y - _topRightRect.Top ? topBorder : rightBorder;
 				case var pt when _bottomRightRect.Contains(pt):
-					return _bottomRightRect.Right - pt.X > _bottomRightRect.Bottom - pt.Y ? BottomBorder : RightBorder;
+					return _bottomRightRect.Right - pt.X > _bottomRightRect.Bottom - pt.Y ? bottomBorder : rightBorder;
 				case var pt when _bottomLeftRect.Contains(pt):
-					return pt.X - _bottomLeftRect.Left > _bottomLeftRect.Bottom - 1 - pt.Y ? BottomBorder : LeftBorder;
+					return pt.X - _bottomLeftRect.Left > _bottomLeftRect.Bottom - 1 - pt.Y ? bottomBorder : leftBorder;
 			}
 
 			return noneBorder;
@@ -104,51 +104,51 @@ namespace SmoothScreen
 		public override int GetHashCode() => HashCode.Combine(screenBounds);
 
 		BorderBase _leftBorder;
-		BorderBase LeftBorder => _leftBorder ??= new LeftBorder_(this);
+		BorderBase leftBorder => _leftBorder ??= new LeftBorder(this);
 
 		BorderBase _topBorder;
-		BorderBase TopBorder => _topBorder ??= new TopBorder_(this);
+		BorderBase topBorder => _topBorder ??= new TopBorder(this);
 
 		BorderBase _rightBorder;
-		BorderBase RightBorder => _rightBorder ??= new RightBorder_(this);
+		BorderBase rightBorder => _rightBorder ??= new RightBorder(this);
 
 		BorderBase _bottomBorder;
-		BorderBase BottomBorder => _bottomBorder ??= new BottomBorder_(this);
+		BorderBase bottomBorder => _bottomBorder ??= new BottomBorder(this);
 
 		BorderBase _noneBorder;
-		BorderBase noneBorder => _noneBorder ??= new NoneBorder_(this);
+		BorderBase noneBorder => _noneBorder ??= new NoneBorder(this);
 
-		private class LeftBorder_ : BorderBase
+		private class LeftBorder : BorderBase
 		{
-			public LeftBorder_(Screener screen) : base(screen)
+			public LeftBorder(Screener screen) : base(screen)
 			{
 			}
 		}
 
-		private class TopBorder_ : BorderBase
+		private class TopBorder : BorderBase
 		{
-			public TopBorder_(Screener screen) : base(screen)
+			public TopBorder(Screener screen) : base(screen)
 			{
 			}
 		}
 
-		private class RightBorder_ : BorderBase
+		private class RightBorder : BorderBase
 		{
-			public RightBorder_(Screener screen) : base(screen)
+			public RightBorder(Screener screen) : base(screen)
 			{
 			}
 		}
 
-		private class BottomBorder_ : BorderBase
+		private class BottomBorder : BorderBase
 		{
-			public BottomBorder_(Screener screen) : base(screen)
+			public BottomBorder(Screener screen) : base(screen)
 			{
 			}
 		}
 
-		private class NoneBorder_ : BorderBase
+		private class NoneBorder : BorderBase
 		{
-			public NoneBorder_(Screener screen) : base(screen)
+			public NoneBorder(Screener screen) : base(screen)
 			{
 			}
 		}
