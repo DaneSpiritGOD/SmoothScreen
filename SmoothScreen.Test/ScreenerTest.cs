@@ -100,14 +100,14 @@ namespace SmoothScreen.Test
 		{
 			var point = new Point(x, y);
 			Assert.That(rect().Contains(point), Is.True);
-			StringAssert.Contains(expectedBorder, screener.GetCloserBorder(point).GetType().Name);
+			StringAssert.StartsWith(expectedBorder, screener.GetCloserBorder(point).GetType().Name);
 		}
 
 		[TestCase(-10, -20)]
 		[TestCase(55, 55)]
 		public void TestGetCloserBordert(int x, int y)
 		{
-			StringAssert.Contains("None", screener.GetCloserBorder(new Point(x, y)).GetType().Name);
+			StringAssert.StartsWith("None", screener.GetCloserBorder(new Point(x, y)).GetType().Name);
 		}
 
 		private Screener screener;
