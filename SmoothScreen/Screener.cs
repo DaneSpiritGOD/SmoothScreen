@@ -59,23 +59,23 @@ namespace SmoothScreen
 		{
 			switch (point)
 			{
-				case var pt when topRect.Contains(pt):
+				case var pt when _topRect.Contains(pt):
 					return TopBorder;
-				case var pt when rightRect.Contains(pt):
+				case var pt when _rightRect.Contains(pt):
 					return RightBorder;
-				case var pt when bottomRect.Contains(pt):
+				case var pt when _bottomRect.Contains(pt):
 					return BottomBorder;
-				case var pt when leftRect.Contains(pt):
+				case var pt when _leftRect.Contains(pt):
 					return LeftBorder;
 
-				case var pt when topLeftRect.Contains(pt):
-					return pt.X - topLeftRect.Left > pt.Y - topLeftRect.Top ? TopBorder : LeftBorder;
-				case var pt when topRightRect.Contains(pt):
-					return topRightRect.Right - 1 - pt.X > pt.Y - topRightRect.Top ? TopBorder : RightBorder;
-				case var pt when bottomRightRect.Contains(pt):
-					return bottomRightRect.Right - pt.X > bottomRightRect.Bottom - pt.Y ? BottomBorder : RightBorder;
-				case var pt when bottomLeftRect.Contains(pt):
-					return pt.X - bottomLeftRect.Left > bottomLeftRect.Bottom - 1 - pt.Y ? BottomBorder : LeftBorder;
+				case var pt when _topLeftRect.Contains(pt):
+					return pt.X - _topLeftRect.Left > pt.Y - _topLeftRect.Top ? TopBorder : LeftBorder;
+				case var pt when _topRightRect.Contains(pt):
+					return _topRightRect.Right - 1 - pt.X > pt.Y - _topRightRect.Top ? TopBorder : RightBorder;
+				case var pt when _bottomRightRect.Contains(pt):
+					return _bottomRightRect.Right - pt.X > _bottomRightRect.Bottom - pt.Y ? BottomBorder : RightBorder;
+				case var pt when _bottomLeftRect.Contains(pt):
+					return pt.X - _bottomLeftRect.Left > _bottomLeftRect.Bottom - 1 - pt.Y ? BottomBorder : LeftBorder;
 			}
 
 			return noneBorder;

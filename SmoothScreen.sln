@@ -27,7 +27,6 @@ Global
 		{C7F08141-A9BE-459C-9DB5-6B7E02A86889}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7F08141-A9BE-459C-9DB5-6B7E02A86889}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7F08141-A9BE-459C-9DB5-6B7E02A86889}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7F08141-A9BE-459C-9DB5-6B7E02A86889}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
