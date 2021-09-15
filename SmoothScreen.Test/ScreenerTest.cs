@@ -27,7 +27,7 @@ namespace SmoothScreen.Test
 		{
 			var point = new Point(x, y);
 			Assert.That(screener.topRect.Contains(point), Is.True);
-			StringAssert.Contains(expectedBorder, screener.GetCloserBorder(point).GetType().Name);
+			StringAssert.Contains(expectedBorder, screener.GetCloseBorder(point).GetType().Name);
 		}
 
 		[TestCase(95, 0, "Top")]
@@ -100,14 +100,14 @@ namespace SmoothScreen.Test
 		{
 			var point = new Point(x, y);
 			Assert.That(rect().Contains(point), Is.True);
-			StringAssert.StartsWith(expectedBorder, screener.GetCloserBorder(point).GetType().Name);
+			StringAssert.StartsWith(expectedBorder, screener.GetCloseBorder(point).GetType().Name);
 		}
 
 		[TestCase(-10, -20)]
 		[TestCase(55, 55)]
 		public void TestGetCloserBordert(int x, int y)
 		{
-			StringAssert.StartsWith("None", screener.GetCloserBorder(new Point(x, y)).GetType().Name);
+			StringAssert.StartsWith("None", screener.GetCloseBorder(new Point(x, y)).GetType().Name);
 		}
 
 		private Screener screener;
@@ -115,7 +115,7 @@ namespace SmoothScreen.Test
 		[SetUp]
 		public void SetUp()
 		{
-			screener = new Screener(new Rectangle(0, 0, 100, 100), 5);
+			screener = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
 		}
 	}
 }

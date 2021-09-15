@@ -46,7 +46,7 @@ namespace SmoothScreen.Test
 		[SetUp]
 		public void SetUp()
 		{
-			screener = new Screener(new Rectangle(0, 0, 100, 100), 5);
+			screener = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
 		}
 
 		class TestBorder1 : BorderBase

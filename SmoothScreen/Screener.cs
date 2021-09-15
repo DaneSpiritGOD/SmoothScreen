@@ -6,7 +6,8 @@ namespace SmoothScreen
 	class Screener
 	{
 		readonly Rectangle screenBounds;
-
+		readonly int closeToBorderThreshold;
+		readonly int expandDistance;
 		readonly Rectangle _topLeftRect;
 		readonly Rectangle _topRect;
 		readonly Rectangle _topRightRect;
@@ -27,11 +28,13 @@ namespace SmoothScreen
 		internal Rectangle leftRect => _leftRect;
 #endif
 
-		public static readonly Screener None = new Screener(new Rectangle(0, 0, 1, 1), 0);
+		public static readonly Screener None = new Screener(new Rectangle(0, 0, 1, 1), 0, 0);
 
-		internal Screener(Rectangle screenBounds, int closeToBorderThreshold)
+		internal Screener(Rectangle screenBounds, int closeToBorderThreshold, int expandDistance)
 		{
 			this.screenBounds = screenBounds;
+			this.closeToBorderThreshold = closeToBorderThreshold;
+			this.expandDistance = expandDistance;
 
 			var x = screenBounds.X;
 			var y = screenBounds.Y;
@@ -55,7 +58,7 @@ namespace SmoothScreen
 			_leftRect = new Rectangle(x, innerTopY, t, innerH);
 		}
 
-		public BorderBase GetCloserBorder(Point point)
+		public BorderBase GetCloseBorder(Point point)
 		{
 			switch (point)
 			{
@@ -82,6 +85,18 @@ namespace SmoothScreen
 		}
 
 		public bool Own(Point point) => screenBounds.Contains(point);
+
+		public Screener Expand()
+		{
+			return new Screener(
+				new Rectangle(
+					screenBounds.X - expandDistance,
+					screenBounds.Y - expandDistance,
+					screenBounds.Width + 2 * expandDistance,
+					screenBounds.Height + 2 * expandDistance),
+				closeToBorderThreshold,
+				expandDistance);
+		}
 
 		public override string ToString() => this == None ? nameof(None) : screenBounds.ToString();
 

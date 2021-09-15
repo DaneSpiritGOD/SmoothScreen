@@ -10,13 +10,16 @@ namespace SmoothScreen
 	class ScreenCollection : Collection<Screener>
 	{
 		readonly int closeToBorderThreshold;
+		readonly int expandDistance;
 
-		public ScreenCollection(int closeToBorderThreshold) : base()
+		public ScreenCollection(int closeToBorderThreshold, int expandDistance) : base()
 		{
 			this.closeToBorderThreshold = closeToBorderThreshold;
+			this.expandDistance = expandDistance;
 		}
 
-		public ScreenCollection(IEnumerable<Screen> screens, int closeToBorderThreshold) : this(closeToBorderThreshold)
+		public ScreenCollection(IEnumerable<Screen> screens, int closeToBorderThreshold, int expandDistance)
+			: this(closeToBorderThreshold, expandDistance)
 		{
 			foreach ( var screen in screens)
 			{
@@ -26,18 +29,7 @@ namespace SmoothScreen
 
 		public void Add(Screen screen)
 		{
-			Add(new Screener(screen.Bounds, closeToBorderThreshold));
-		}
-
-		public Screener GetOwner(Point point)
-		{
-			foreach (var screen in Items)
-			{
-				if (screen.Own(point))
-					return screen;
-			}
-
-			return Screener.None;
+			Add(new Screener(screen.Bounds, closeToBorderThreshold, expandDistance));
 		}
 	}
 }
