@@ -47,7 +47,7 @@ namespace SmoothScreen
 
 			for (var index = 0; index < Length; ++index)
 			{
-				yield return this[index];
+				yield return items[GetItemsIndex(index)];
 			}
 		}
 
