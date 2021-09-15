@@ -17,17 +17,6 @@ namespace SmoothScreen
 		readonly Rectangle _bottomLeftRect;
 		readonly Rectangle _leftRect;
 
-#if DEBUG
-		internal Rectangle topLeftRect => _topLeftRect;
-		internal Rectangle topRect => _topRect;
-		internal Rectangle topRightRect => _topRightRect;
-		internal Rectangle rightRect => _rightRect;
-		internal Rectangle bottomRightRect => _bottomRightRect;
-		internal Rectangle bottomRect => _bottomRect;
-		internal Rectangle bottomLeftRect => _bottomLeftRect;
-		internal Rectangle leftRect => _leftRect;
-#endif
-
 		public static readonly Screener None = new Screener(new Rectangle(0, 0, 1, 1), 0, 0);
 
 		internal Screener(Rectangle screenBounds, int closeToBorderThreshold, int expandDistance)
@@ -152,5 +141,16 @@ namespace SmoothScreen
 			{
 			}
 		}
+
+#if DEBUG
+		internal Rectangle topLeftRect => _topLeftRect;
+		internal Rectangle topRect => _topRect;
+		internal Rectangle topRightRect => _topRightRect;
+		internal Rectangle rightRect => _rightRect;
+		internal Rectangle bottomRightRect => _bottomRightRect;
+		internal Rectangle bottomRect => _bottomRect;
+		internal Rectangle bottomLeftRect => _bottomLeftRect;
+		internal Rectangle leftRect => _leftRect;
+#endif
 	}
 }
