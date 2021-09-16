@@ -47,7 +47,7 @@ namespace SmoothScreen
 			_leftRect = new Rectangle(x, innerTopY, t, innerH);
 		}
 
-		public BorderBase GetCloseBorder(Point point)
+		public Border GetCloseBorder(Point point)
 		{
 			switch (point)
 			{
@@ -92,55 +92,20 @@ namespace SmoothScreen
 		public override bool Equals(object obj) => obj is Screener screener && screenBounds.Equals(screener.screenBounds);
 		public override int GetHashCode() => HashCode.Combine(screenBounds);
 
-		BorderBase _leftBorder;
-		BorderBase leftBorder => _leftBorder ??= new LeftBorder(this);
+		Border _leftBorder;
+		Border leftBorder => _leftBorder ??= new LeftBorder(this);
 
-		BorderBase _topBorder;
-		BorderBase topBorder => _topBorder ??= new TopBorder(this);
+		Border _topBorder;
+		Border topBorder => _topBorder ??= new TopBorder(this);
 
-		BorderBase _rightBorder;
-		BorderBase rightBorder => _rightBorder ??= new RightBorder(this);
+		Border _rightBorder;
+		Border rightBorder => _rightBorder ??= new RightBorder(this);
 
-		BorderBase _bottomBorder;
-		BorderBase bottomBorder => _bottomBorder ??= new BottomBorder(this);
+		Border _bottomBorder;
+		Border bottomBorder => _bottomBorder ??= new BottomBorder(this);
 
-		BorderBase _noneBorder;
-		BorderBase noneBorder => _noneBorder ??= new NoneBorder(this);
-
-		private class LeftBorder : BorderBase
-		{
-			public LeftBorder(Screener screen) : base(screen)
-			{
-			}
-		}
-
-		private class TopBorder : BorderBase
-		{
-			public TopBorder(Screener screen) : base(screen)
-			{
-			}
-		}
-
-		private class RightBorder : BorderBase
-		{
-			public RightBorder(Screener screen) : base(screen)
-			{
-			}
-		}
-
-		private class BottomBorder : BorderBase
-		{
-			public BottomBorder(Screener screen) : base(screen)
-			{
-			}
-		}
-
-		private class NoneBorder : BorderBase
-		{
-			public NoneBorder(Screener screen) : base(screen)
-			{
-			}
-		}
+		Border _noneBorder;
+		Border noneBorder => _noneBorder ??= new NoneBorder(this);
 
 #if DEBUG
 		internal Rectangle topLeftRect => _topLeftRect;

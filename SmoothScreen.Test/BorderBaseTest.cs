@@ -49,14 +49,14 @@ namespace SmoothScreen.Test
 			screener = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
 		}
 
-		class TestBorder1 : BorderBase
+		class TestBorder1 : Border
 		{
 			public TestBorder1(Screener screen) : base(screen)
 			{
 			}
 		}
 
-		class TestBorder2 : BorderBase
+		class TestBorder2 : Border
 		{
 			public TestBorder2(Screener screen) : base(screen)
 			{
