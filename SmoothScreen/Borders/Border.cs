@@ -5,18 +5,16 @@ namespace SmoothScreen
 {
 	internal abstract class Border
 	{
-		protected readonly Screener screen;
+		public Screener Owner { get; }
 		protected readonly Line line;
 
 		protected Border(Screener screen, Line line)
 		{
-			this.screen = screen;
+			Owner = screen;
 			this.line = line;
 		}
 
-		public override bool Equals(object obj)
-			=> obj.GetType() == GetType() && EqualityComparer<Screener>.Default.Equals(screen, (obj as Border).screen);
-		public override int GetHashCode() => System.HashCode.Combine(screen, GetType().FullName);
+		public Border Next { get; set; }
 	}
 
 	class LeftBorder : Border
