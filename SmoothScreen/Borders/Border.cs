@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace SmoothScreen
 {
 	internal abstract class Border
 	{
-		private readonly Screener screen;
+		protected readonly Screener screen;
+		protected readonly Line line;
 
-		protected Border(Screener screen)
+		protected Border(Screener screen, Line line)
 		{
 			this.screen = screen;
+			this.line = line;
 		}
 
 		public override bool Equals(object obj)
@@ -18,35 +21,37 @@ namespace SmoothScreen
 
 	class LeftBorder : Border
 	{
-		public LeftBorder(Screener screen) : base(screen)
+		public LeftBorder(Screener screen, Line line) : base(screen, line)
 		{
 		}
 	}
 
 	class TopBorder : Border
 	{
-		public TopBorder(Screener screen) : base(screen)
+		public TopBorder(Screener screen, Line line) : base(screen, line)
 		{
 		}
 	}
 
 	class RightBorder : Border
 	{
-		public RightBorder(Screener screen) : base(screen)
+		public RightBorder(Screener screen, Line line) : base(screen, line)
 		{
 		}
 	}
 
 	class BottomBorder : Border
 	{
-		public BottomBorder(Screener screen) : base(screen)
+		public BottomBorder(Screener screen, Line line) : base(screen, line)
 		{
 		}
 	}
 
 	class NoneBorder : Border
 	{
-		public NoneBorder(Screener screen) : base(screen)
+		static readonly Line LineForNone = new Line(new Point(0, 0), new Point(0, 0));
+
+		public NoneBorder(Screener screen, Line line) : base(screen, LineForNone)
 		{
 		}
 	}
