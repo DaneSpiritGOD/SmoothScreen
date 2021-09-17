@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace SmoothScreen.Borders
+﻿namespace SmoothScreen.Borders
 {
-	class DistinctAxisBorderException : Exception
+	class DistinctAxisBorderException : BorderException
 	{
 		public DistinctAxisBorderException()
 		{

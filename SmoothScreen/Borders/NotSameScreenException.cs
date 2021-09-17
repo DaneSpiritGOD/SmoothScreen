@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace SmoothScreen.Borders
+﻿namespace SmoothScreen.Borders
 {
-	class NotSameScreenException : Exception
+	class NotSameScreenException : BorderException
 	{
 		public NotSameScreenException()
 		{

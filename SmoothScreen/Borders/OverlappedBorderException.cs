@@ -2,7 +2,7 @@
 
 namespace SmoothScreen.Borders
 {
-	class OverlappedBorderException : Exception
+	class OverlappedBorderException : BorderException
 	{
 		public OverlappedBorderException()
 		{
