@@ -13,9 +13,13 @@ namespace SmoothScreen
 
 		protected Border(Screener screen, Line line)
 		{
+			EnsureConstructorParameters(screen, line);
+
 			Owner = screen;
 			Line = line;
 		}
+
+		protected abstract void EnsureConstructorParameters(Screener screen, Line line);
 
 		protected bool IsSameType(Border other) => other.Order == Order;
 
@@ -41,6 +45,11 @@ namespace SmoothScreen
 				this.parent = parent;
 			}
 
+			protected override void EnsureConstructorParameters(Screener screen, Line line)
+			{
+				parent.EnsureConstructorParameters(screen, line);
+			}
+
 			protected abstract void EnsureSameAxisButNoOverlap(Border other);
 			protected abstract int CompareToDifferentTypeCore(Border other);
 
@@ -49,7 +58,15 @@ namespace SmoothScreen
 				EnsureSameAxisButNoOverlap(other);
 				return CompareToDifferentTypeCore(other);
 			}
+
+#if DEBUG
+			public override Border GetSegmentBorderForTest() => throw new NotSupportedException();
+#endif
 		}
+
+#if DEBUG
+		public abstract Border GetSegmentBorderForTest();
+#endif
 	}
 
 	class TopBorder : Border
@@ -57,6 +74,10 @@ namespace SmoothScreen
 		protected override int Order => 100;
 
 		public TopBorder(Screener screen, Line line) : base(screen, line)
+		{
+		}
+
+		protected override void EnsureConstructorParameters(Screener screen, Line line)
 		{
 			if (line.Start.Y != line.End.Y || line.Start.X >= line.End.X)
 			{
@@ -84,6 +105,10 @@ namespace SmoothScreen
 
 			protected override int CompareToDifferentTypeCore(Border other) => this.GetStartX() - other.GetStartX();
 		}
+
+#if DEBUG
+		public override Border GetSegmentBorderForTest() => new SegmentTopBorder(this, Line);
+#endif
 	}
 
 	class RightBorder : Border
@@ -92,17 +117,21 @@ namespace SmoothScreen
 
 		public RightBorder(Screener screen, Line line) : base(screen, line)
 		{
+		}
+
+		protected override void EnsureConstructorParameters(Screener screen, Line line)
+		{
 			if (line.Start.X != line.End.X || line.Start.Y >= line.End.Y)
 			{
 				throw new DistinctAxisBorderException();
 			}
 		}
 
-		class SegmentRightBorder : SegmentBorder<TopBorder>
+		class SegmentRightBorder : SegmentBorder<RightBorder>
 		{
 			protected override int Order => 250;
 
-			public SegmentRightBorder(TopBorder parent, Line line) : base(parent, line)
+			public SegmentRightBorder(RightBorder parent, Line line) : base(parent, line)
 			{
 			}
 
@@ -118,6 +147,10 @@ namespace SmoothScreen
 
 			protected override int CompareToDifferentTypeCore(Border other) => this.GetStartY() - other.GetStartY();
 		}
+
+#if DEBUG
+		public override Border GetSegmentBorderForTest() => new SegmentRightBorder(this, Line);
+#endif
 	}
 
 	class BottomBorder : Border
@@ -126,17 +159,21 @@ namespace SmoothScreen
 
 		public BottomBorder(Screener screen, Line line) : base(screen, line)
 		{
+		}
+
+		protected override void EnsureConstructorParameters(Screener screen, Line line)
+		{
 			if (line.Start.Y != line.End.Y || line.Start.X <= line.End.X)
 			{
 				throw new DistinctAxisBorderException();
 			}
 		}
 
-		class SegmentBottomBorder : SegmentBorder<TopBorder>
+		class SegmentBottomBorder : SegmentBorder<BottomBorder>
 		{
 			protected override int Order => 350;
 
-			public SegmentBottomBorder(TopBorder parent, Line line) : base(parent, line)
+			public SegmentBottomBorder(BottomBorder parent, Line line) : base(parent, line)
 			{
 			}
 
@@ -152,6 +189,10 @@ namespace SmoothScreen
 
 			protected override int CompareToDifferentTypeCore(Border other) => other.GetStartX() - this.GetStartX();
 		}
+
+#if DEBUG
+		public override Border GetSegmentBorderForTest() => new SegmentBottomBorder(this, Line);
+#endif
 	}
 
 	class LeftBorder : Border
@@ -160,17 +201,21 @@ namespace SmoothScreen
 
 		public LeftBorder(Screener screen, Line line) : base(screen, line)
 		{
+		}
+
+		protected override void EnsureConstructorParameters(Screener screen, Line line)
+		{
 			if (line.Start.X != line.End.X || line.Start.X >= line.End.X)
 			{
 				throw new DistinctAxisBorderException();
 			}
 		}
 
-		class SegmentLeftBorder : SegmentBorder<TopBorder>
+		class SegmentLeftBorder : SegmentBorder<LeftBorder>
 		{
 			protected override int Order => 450;
 
-			public SegmentLeftBorder(TopBorder parent, Line line) : base(parent, line)
+			public SegmentLeftBorder(LeftBorder parent, Line line) : base(parent, line)
 			{
 			}
 
@@ -186,6 +231,10 @@ namespace SmoothScreen
 
 			protected override int CompareToDifferentTypeCore(Border other) => other.GetStartY() - this.GetStartY();
 		}
+
+#if DEBUG
+		public override Border GetSegmentBorderForTest() => new SegmentLeftBorder(this, Line);
+#endif
 	}
 
 	class NoneBorder : Border
@@ -197,5 +246,11 @@ namespace SmoothScreen
 		public NoneBorder(Screener screen) : base(screen, LineForNone)
 		{
 		}
+
+		protected override void EnsureConstructorParameters(Screener screen, Line line) { }
+
+#if DEBUG
+		public override Border GetSegmentBorderForTest() => throw new NotSupportedException();
+#endif
 	}
 }

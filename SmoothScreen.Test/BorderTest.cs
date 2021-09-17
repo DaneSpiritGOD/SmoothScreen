@@ -6,7 +6,6 @@ namespace SmoothScreen.Test
 {
 	class BorderTest
 	{
-		// TODO: Distinct Order
 		// TODO: Constructor throw DistinctAxisBorderException
 		// TODO: OverlapException
 		public void TestOrder()
