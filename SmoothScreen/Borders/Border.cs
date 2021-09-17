@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 using SmoothScreen.Borders;
 
 namespace SmoothScreen
@@ -44,13 +45,12 @@ namespace SmoothScreen
 			protected SegmentBorder(TParent parent, Line line) : base(parent.Owner, line)
 			{
 				this.parent = parent;
-			}
 
-			protected override void EnsureConstructorParameters(Screener screen, Line line)
-			{
-				parent.EnsureConstructorParameters(screen, line);
+				parent.EnsureConstructorParameters(parent.Owner, line);
 				EnsureSubsetOfParent();
 			}
+
+			protected override void EnsureConstructorParameters(Screener screen, Line line) { }
 
 			protected abstract void EnsureSubsetOfParent();
 
@@ -77,7 +77,7 @@ namespace SmoothScreen
 	{
 		protected override int Order => 100;
 
-		public TopBorder(Screener screen) : base(screen, screen.Bounds.GetTop())
+		public TopBorder(Screener screen) : base(screen, screen.Bounds.GetTopLine())
 		{
 		}
 
@@ -129,7 +129,7 @@ namespace SmoothScreen
 	{
 		protected override int Order => 200;
 
-		public RightBorder(Screener screen) : base(screen, screen.Bounds.GetRight())
+		public RightBorder(Screener screen) : base(screen, screen.Bounds.GetRightLine())
 		{
 		}
 
@@ -181,7 +181,7 @@ namespace SmoothScreen
 	{
 		protected override int Order => 300;
 
-		public BottomBorder(Screener screen) : base(screen, screen.Bounds.GetBottom())
+		public BottomBorder(Screener screen) : base(screen, screen.Bounds.GetBottomLine())
 		{
 		}
 
@@ -233,7 +233,7 @@ namespace SmoothScreen
 	{
 		protected override int Order => 400;
 
-		public LeftBorder(Screener screen) : base(screen, screen.Bounds.GetLeft())
+		public LeftBorder(Screener screen) : base(screen, screen.Bounds.GetLeftLine())
 		{
 		}
 
