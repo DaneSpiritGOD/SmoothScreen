@@ -5,7 +5,7 @@ namespace SmoothScreen
 {
 	class Screener
 	{
-		readonly Rectangle screenBounds;
+		public Rectangle Bounds { get; }
 		readonly int closeToBorderThreshold;
 		readonly int expandDistance;
 		readonly Rectangle _topLeftRect;
@@ -21,7 +21,7 @@ namespace SmoothScreen
 
 		internal Screener(Rectangle screenBounds, int closeToBorderThreshold, int expandDistance)
 		{
-			this.screenBounds = screenBounds;
+			this.Bounds = screenBounds;
 			this.closeToBorderThreshold = closeToBorderThreshold;
 			this.expandDistance = expandDistance;
 
@@ -73,24 +73,24 @@ namespace SmoothScreen
 			return noneBorder;
 		}
 
-		public bool Own(Point point) => screenBounds.Contains(point);
+		public bool Own(Point point) => Bounds.Contains(point);
 
 		public Screener Expand()
 		{
 			return new Screener(
 				new Rectangle(
-					screenBounds.X - expandDistance,
-					screenBounds.Y - expandDistance,
-					screenBounds.Width + 2 * expandDistance,
-					screenBounds.Height + 2 * expandDistance),
+					Bounds.X - expandDistance,
+					Bounds.Y - expandDistance,
+					Bounds.Width + 2 * expandDistance,
+					Bounds.Height + 2 * expandDistance),
 				closeToBorderThreshold,
 				expandDistance);
 		}
 
-		public override string ToString() => this == None ? nameof(None) : screenBounds.ToString();
+		public override string ToString() => this == None ? nameof(None) : Bounds.ToString();
 
-		public override bool Equals(object obj) => obj is Screener screener && screenBounds.Equals(screener.screenBounds);
-		public override int GetHashCode() => HashCode.Combine(screenBounds);
+		public override bool Equals(object obj) => obj is Screener screener && Bounds.Equals(screener.Bounds);
+		public override int GetHashCode() => HashCode.Combine(Bounds);
 
 		Border leftBorder => null;//_leftBorder ??= new LeftBorder(this);
 
