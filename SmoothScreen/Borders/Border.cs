@@ -20,9 +20,17 @@ namespace SmoothScreen
 		protected bool IsSameType(Border other) => other.Order == Order;
 
 		protected virtual int CompareToSameType(Border other) => throw new NotSupportedException();
-		protected virtual int CompareToDifferentType(Border other) => other.Order - Order;
+		protected virtual int CompareToDifferentType(Border other) => Order - other.Order;
 
-		public int CompareTo(Border other) => IsSameType(other) ? CompareToSameType(other) : CompareToDifferentType(other);
+		public int CompareTo(Border other)
+		{
+			if (!other.Owner.Equals(Owner))
+			{
+				throw new NotSameScreenException();
+			}
+
+			return IsSameType(other) ? CompareToSameType(other) : CompareToDifferentType(other);
+		}
 
 		protected abstract class SegmentBorder<TParent> : Border where TParent : Border
 		{
@@ -89,6 +97,27 @@ namespace SmoothScreen
 				throw new DistinctAxisBorderException();
 			}
 		}
+
+		class SegmentRightBorder : SegmentBorder<TopBorder>
+		{
+			protected override int Order => 250;
+
+			public SegmentRightBorder(TopBorder parent, Line line) : base(parent, line)
+			{
+			}
+
+			protected override void EnsureSameAxisButNoOverlap(Border other)
+			{
+				if (other.GetStartX() != this.GetStartX() ||
+					other.GetStartY() <= this.GetEndY() ||
+					other.GetEndY() >= this.GetStartY())
+				{
+					throw new OverlappedBorderException();
+				}
+			}
+
+			protected override int CompareToDifferentTypeCore(Border other) => this.GetStartY() - other.GetStartY();
+		}
 	}
 
 	class BottomBorder : Border
@@ -102,11 +131,32 @@ namespace SmoothScreen
 				throw new DistinctAxisBorderException();
 			}
 		}
+
+		class SegmentBottomBorder : SegmentBorder<TopBorder>
+		{
+			protected override int Order => 350;
+
+			public SegmentBottomBorder(TopBorder parent, Line line) : base(parent, line)
+			{
+			}
+
+			protected override void EnsureSameAxisButNoOverlap(Border other)
+			{
+				if (other.GetStartY() != this.GetStartY() ||
+					other.GetStartX() >= this.GetEndX() ||
+					other.GetEndX() <= this.GetStartX())
+				{
+					throw new OverlappedBorderException();
+				}
+			}
+
+			protected override int CompareToDifferentTypeCore(Border other) => other.GetStartX() - this.GetStartX();
+		}
 	}
 
 	class LeftBorder : Border
 	{
-		protected override int Order => 0;
+		protected override int Order => 400;
 
 		public LeftBorder(Screener screen, Line line) : base(screen, line)
 		{
@@ -114,6 +164,27 @@ namespace SmoothScreen
 			{
 				throw new DistinctAxisBorderException();
 			}
+		}
+
+		class SegmentLeftBorder : SegmentBorder<TopBorder>
+		{
+			protected override int Order => 450;
+
+			public SegmentLeftBorder(TopBorder parent, Line line) : base(parent, line)
+			{
+			}
+
+			protected override void EnsureSameAxisButNoOverlap(Border other)
+			{
+				if (other.GetStartY() != this.GetStartY() ||
+					other.GetStartY() >= this.GetEndY() ||
+					other.GetEndY() <= this.GetStartY())
+				{
+					throw new OverlappedBorderException();
+				}
+			}
+
+			protected override int CompareToDifferentTypeCore(Border other) => other.GetStartY() - this.GetStartY();
 		}
 	}
 
@@ -123,7 +194,7 @@ namespace SmoothScreen
 
 		protected override int Order => int.MinValue;
 
-		public NoneBorder(Screener screen, Line line) : base(screen, LineForNone)
+		public NoneBorder(Screener screen) : base(screen, LineForNone)
 		{
 		}
 	}

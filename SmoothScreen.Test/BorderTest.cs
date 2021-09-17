@@ -9,5 +9,9 @@ namespace SmoothScreen.Test
 		// TODO: Distinct Order
 		// TODO: Constructor throw DistinctAxisBorderException
 		// TODO: OverlapException
+		public void TestOrder()
+		{
+
+		}
 	}
 }

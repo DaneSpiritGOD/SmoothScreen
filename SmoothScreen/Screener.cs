@@ -92,19 +92,14 @@ namespace SmoothScreen
 		public override bool Equals(object obj) => obj is Screener screener && screenBounds.Equals(screener.screenBounds);
 		public override int GetHashCode() => HashCode.Combine(screenBounds);
 
-		Border _leftBorder;
 		Border leftBorder => null;//_leftBorder ??= new LeftBorder(this);
 
-		Border _topBorder;
 		Border topBorder => null;//_topBorder ??= new TopBorder(this);
 
-		Border _rightBorder;
 		Border rightBorder => null;//_rightBorder ??= new RightBorder(this);
 
-		Border _bottomBorder;
 		Border bottomBorder => null;//_bottomBorder ??= new BottomBorder(this);
 
-		Border _noneBorder;
 		Border noneBorder => null;//_noneBorder ??= new NoneBorder(this);
 
 #if DEBUG
