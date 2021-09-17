@@ -10,5 +10,7 @@
 
 		public Point Start { get; }
 		public Point End { get; }
+
+		public bool Equals(Line line) => Start.Equals(line.Start) && End.Equals(line.End);
 	}
 }
