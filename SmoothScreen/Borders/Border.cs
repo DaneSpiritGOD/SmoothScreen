@@ -19,6 +19,7 @@ namespace SmoothScreen
 			Line = line;
 		}
 
+		// should not change state inside the overridden method
 		protected abstract void EnsureConstructorParameters(Screener screen, Line line);
 
 		protected bool IsSameType(Border other) => other.Order == Order;
@@ -48,7 +49,10 @@ namespace SmoothScreen
 			protected override void EnsureConstructorParameters(Screener screen, Line line)
 			{
 				parent.EnsureConstructorParameters(screen, line);
+				EnsureSubsetOfParent();
 			}
+
+			protected abstract void EnsureSubsetOfParent();
 
 			protected abstract void EnsureSameAxisButNoOverlap(Border other);
 			protected abstract int CompareToDifferentTypeCore(Border other);
@@ -60,12 +64,12 @@ namespace SmoothScreen
 			}
 
 #if DEBUG
-			public override Border GetSegmentBorderForTest() => throw new NotSupportedException();
+			public override Border GetSegmentBorderForTest(Line line) => throw new NotSupportedException();
 #endif
 		}
 
 #if DEBUG
-		public abstract Border GetSegmentBorderForTest();
+		public abstract Border GetSegmentBorderForTest(Line line);
 #endif
 	}
 
@@ -93,6 +97,16 @@ namespace SmoothScreen
 			{
 			}
 
+			protected override void EnsureSubsetOfParent()
+			{
+				if (parent.GetStartY() != this.GetStartY() ||
+					parent.GetStartX() >= this.GetStartX() ||
+					parent.GetEndX() <= this.GetEndX())
+				{
+					throw new SegmentBorderNotSubsetOfParentException();
+				}
+			}
+
 			protected override void EnsureSameAxisButNoOverlap(Border other)
 			{
 				if (other.GetStartY() != this.GetStartY() ||
@@ -107,7 +121,7 @@ namespace SmoothScreen
 		}
 
 #if DEBUG
-		public override Border GetSegmentBorderForTest() => new SegmentTopBorder(this, Line);
+		public override Border GetSegmentBorderForTest(Line line) => new SegmentTopBorder(this, line);
 #endif
 	}
 
@@ -135,6 +149,16 @@ namespace SmoothScreen
 			{
 			}
 
+			protected override void EnsureSubsetOfParent()
+			{
+				if (parent.GetStartX() != this.GetStartX() ||
+					parent.GetStartY() >= this.GetStartY() ||
+					parent.GetEndY() <= this.GetEndY())
+				{
+					throw new SegmentBorderNotSubsetOfParentException();
+				}
+			}
+
 			protected override void EnsureSameAxisButNoOverlap(Border other)
 			{
 				if (other.GetStartX() != this.GetStartX() ||
@@ -149,7 +173,7 @@ namespace SmoothScreen
 		}
 
 #if DEBUG
-		public override Border GetSegmentBorderForTest() => new SegmentRightBorder(this, Line);
+		public override Border GetSegmentBorderForTest(Line line) => new SegmentRightBorder(this, line);
 #endif
 	}
 
@@ -177,6 +201,16 @@ namespace SmoothScreen
 			{
 			}
 
+			protected override void EnsureSubsetOfParent()
+			{
+				if (parent.GetStartY() != this.GetStartY() ||
+					parent.GetStartX() <= this.GetStartX() ||
+					parent.GetEndX() >= this.GetEndX())
+				{
+					throw new SegmentBorderNotSubsetOfParentException();
+				}
+			}
+
 			protected override void EnsureSameAxisButNoOverlap(Border other)
 			{
 				if (other.GetStartY() != this.GetStartY() ||
@@ -191,7 +225,7 @@ namespace SmoothScreen
 		}
 
 #if DEBUG
-		public override Border GetSegmentBorderForTest() => new SegmentBottomBorder(this, Line);
+		public override Border GetSegmentBorderForTest(Line line) => new SegmentBottomBorder(this, line);
 #endif
 	}
 
@@ -219,6 +253,16 @@ namespace SmoothScreen
 			{
 			}
 
+			protected override void EnsureSubsetOfParent()
+			{
+				if (parent.GetStartX() != this.GetStartX() ||
+					parent.GetStartY() <= this.GetStartY() ||
+					parent.GetEndY() >= this.GetEndY())
+				{
+					throw new SegmentBorderNotSubsetOfParentException();
+				}
+			}
+
 			protected override void EnsureSameAxisButNoOverlap(Border other)
 			{
 				if (other.GetStartY() != this.GetStartY() ||
@@ -233,7 +277,7 @@ namespace SmoothScreen
 		}
 
 #if DEBUG
-		public override Border GetSegmentBorderForTest() => new SegmentLeftBorder(this, Line);
+		public override Border GetSegmentBorderForTest(Line line) => new SegmentLeftBorder(this, line);
 #endif
 	}
 
@@ -250,7 +294,7 @@ namespace SmoothScreen
 		protected override void EnsureConstructorParameters(Screener screen, Line line) { }
 
 #if DEBUG
-		public override Border GetSegmentBorderForTest() => throw new NotSupportedException();
+		public override Border GetSegmentBorderForTest(Line line) => throw new NotSupportedException();
 #endif
 	}
 }
