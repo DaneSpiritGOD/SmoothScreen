@@ -9,12 +9,12 @@ namespace SmoothScreen
 		protected abstract int Order { get; }
 		
 		public Screener Owner { get; }
-		protected readonly Line line;
+		public Line Line { get; }
 
 		protected Border(Screener screen, Line line)
 		{
 			Owner = screen;
-			this.line = line;
+			Line = line;
 		}
 
 		protected bool IsSameType(Border other) => other.Order == Order;
@@ -66,12 +66,15 @@ namespace SmoothScreen
 
 			protected override void EnsureSameAxisButNoOverlap(Border other)
 			{
-				//if (other.line)
+				if (other.GetStartY() != this.GetStartY() ||
+					other.GetStartX() <= this.GetEndX() ||
+					other.GetEndX() >= this.GetStartX())
+				{
+					throw new OverlappedBorderException();
+				}
 			}
 
-			protected override int CompareToDifferentTypeCore(Border other)
-			{
-			}
+			protected override int CompareToDifferentTypeCore(Border other) => this.GetStartX() - other.GetStartX();
 		}
 	}
 
@@ -116,9 +119,9 @@ namespace SmoothScreen
 
 	class NoneBorder : Border
 	{
-		static readonly Line LineForNone = new Line(new Point(0, 0), new Point(0, 0));
+		static readonly Line LineForNone = new Line(new Point(int.MinValue, int.MinValue), new Point(int.MinValue, int.MinValue));
 
-		protected override int Order => throw new NotSupportedException();
+		protected override int Order => int.MinValue;
 
 		public NoneBorder(Screener screen, Line line) : base(screen, LineForNone)
 		{
