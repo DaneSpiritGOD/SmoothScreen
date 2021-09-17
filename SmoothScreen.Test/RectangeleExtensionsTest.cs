@@ -8,25 +8,25 @@ namespace SmoothScreen.Test
 		[Test]
 		public void TestGetTop()
 		{
-			Assert.That(rect.GetTop(), Is.EqualTo(new Line(0, 0, 99, 0)));
+			Assert.That(rect.GetTopLine(), Is.EqualTo(new Line(0, 0, 99, 0)));
 		}
 
 		[Test]
 		public void TestGetRight()
 		{
-			Assert.That(rect.GetRight(), Is.EqualTo(new Line(99, 0, 99, 99)));
+			Assert.That(rect.GetRightLine(), Is.EqualTo(new Line(99, 0, 99, 99)));
 		}
 
 		[Test]
 		public void TestGetBottom()
 		{
-			Assert.That(rect.GetBottom(), Is.EqualTo(new Line(99, 99, 0, 99)));
+			Assert.That(rect.GetBottomLine(), Is.EqualTo(new Line(99, 99, 0, 99)));
 		}
 
 		[Test]
 		public void TestGetLeft()
 		{
-			Assert.That(rect.GetLeft(), Is.EqualTo(new Line(0, 99, 0, 0)));
+			Assert.That(rect.GetLeftLine(), Is.EqualTo(new Line(0, 99, 0, 0)));
 		}
 
 		Rectangle rect;
