@@ -10,9 +10,9 @@ namespace SmoothScreen.Test
 		{
 			var screen = new Screener(new Rectangle(0, 0, 10, 10), 1, 1);
 			var collection = new MouseStateCollection(3);
-			collection.Fill(new MouseState { Screen = screen, Point = new Point(0,0) });
-			collection.Fill(new MouseState { Screen = screen, Point = new Point(1,1) });
-			collection.Fill(new MouseState { Screen = screen, Point = new Point(2,2) });
+			collection.Fill(new MouseState(screen, new Point(0, 0)));
+			collection.Fill(new MouseState(screen, new Point(1, 1)));
+			collection.Fill(new MouseState(screen, new Point(2, 2)));
 
 			collection[0].Point.Equals(new Point(2, 2));
 			collection[1].Point.Equals(new Point(1, 1));
@@ -27,22 +27,22 @@ namespace SmoothScreen.Test
 
 			var screen = new Screener(new Rectangle(0, 0, 10, 10), 1, 1);
 
-			collection.Fill(new MouseState { Screen = screen, Point = new Point(0, 0) });
-			CollectionAssert.AreEqual(collection, new [] { new MouseState { Screen = screen, Point = new Point(0, 0) } });
+			collection.Fill(new MouseState(screen, new Point(0, 0)));
+			CollectionAssert.AreEqual(collection, new [] { new MouseState(screen, new Point(0, 0)) });
 
-			collection.Fill(new MouseState { Screen = screen, Point = new Point(1, 1) });
+			collection.Fill(new MouseState(screen, new Point(1, 1)));
 			CollectionAssert.AreEqual(collection, new []
 			{
-				new MouseState { Screen = screen, Point = new Point(1, 1) },
-				new MouseState { Screen = screen, Point = new Point(0, 0) }
+				new MouseState(screen, new Point(1, 1)),
+				new MouseState(screen, new Point(0, 0))
 			});
 
-			collection.Fill(new MouseState { Screen = screen, Point = new Point(2, 2) });
+			collection.Fill(new MouseState(screen, new Point(2, 2)));
 			CollectionAssert.AreEqual(collection, new [] 
 			{ 
-				new MouseState { Screen = screen, Point = new Point(2, 2) },
-				new MouseState { Screen = screen, Point = new Point(1, 1) },
-				new MouseState { Screen = screen, Point = new Point(0, 0) }
+				new MouseState(screen, new Point(2, 2)),
+				new MouseState(screen, new Point(1, 1)),
+				new MouseState(screen, new Point(0, 0))
 			});
 		}
 	}
