@@ -14,6 +14,7 @@ namespace SmoothScreen
 			this.screens = screens;
 		}
 
+		// TODO: add a parameter of last screen in order to improve lookup performance
 		public Screener GetOwner(Point point)
 		{
 			foreach (var screen in screens)
