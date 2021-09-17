@@ -17,4 +17,7 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("d0ccdd8a-da92-4083-80b4-ddd0c0c5c254")]
 
+#if DEBUG
 [assembly: InternalsVisibleTo("SmoothScreen.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+#endif
