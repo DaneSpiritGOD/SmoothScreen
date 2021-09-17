@@ -1,5 +1,6 @@
 ﻿namespace System.Drawing
 {
+	// TODO: Replace by Vector
 	public readonly struct Line
 	{
 		public Line(Point start, Point end)
