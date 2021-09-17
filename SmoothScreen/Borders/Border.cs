@@ -77,7 +77,7 @@ namespace SmoothScreen
 	{
 		protected override int Order => 100;
 
-		public TopBorder(Screener screen, Line line) : base(screen, line)
+		public TopBorder(Screener screen) : base(screen, screen.Bounds.GetTop())
 		{
 		}
 
@@ -129,7 +129,7 @@ namespace SmoothScreen
 	{
 		protected override int Order => 200;
 
-		public RightBorder(Screener screen, Line line) : base(screen, line)
+		public RightBorder(Screener screen) : base(screen, screen.Bounds.GetRight())
 		{
 		}
 
@@ -181,7 +181,7 @@ namespace SmoothScreen
 	{
 		protected override int Order => 300;
 
-		public BottomBorder(Screener screen, Line line) : base(screen, line)
+		public BottomBorder(Screener screen) : base(screen, screen.Bounds.GetBottom())
 		{
 		}
 
@@ -233,13 +233,13 @@ namespace SmoothScreen
 	{
 		protected override int Order => 400;
 
-		public LeftBorder(Screener screen, Line line) : base(screen, line)
+		public LeftBorder(Screener screen) : base(screen, screen.Bounds.GetLeft())
 		{
 		}
 
 		protected override void EnsureConstructorParameters(Screener screen, Line line)
 		{
-			if (line.Start.X != line.End.X || line.Start.X >= line.End.X)
+			if (line.Start.X != line.End.X || line.Start.Y <= line.End.Y)
 			{
 				throw new DistinctAxisBorderException();
 			}
