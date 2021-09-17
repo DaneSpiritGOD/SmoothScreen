@@ -8,6 +8,10 @@
 			End = end;
 		}
 
+		public Line(int startX, int startY, int endX, int endY) : this(new Point(startX, startY), new Point(endX, endY))
+		{
+		}
+
 		public Point Start { get; }
 		public Point End { get; }
 

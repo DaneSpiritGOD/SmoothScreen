@@ -22,5 +22,14 @@ namespace SmoothScreen.Test
 
 			Assert.That(line1, Is.Not.EqualTo(line2));
 		}
+
+		[Test]
+		public void TestConstructor()
+		{
+			var line1 = new Line(new Point(1, 2), new Point(3, 4));
+			var line2 = new Line(1, 2, 3, 4);
+
+			Assert.That(line1, Is.EqualTo(line2));
+		}
 	}
 }
