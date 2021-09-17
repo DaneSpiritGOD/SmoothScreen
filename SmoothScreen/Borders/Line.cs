@@ -1,6 +1,6 @@
 ﻿namespace System.Drawing
 {
-	public struct Line
+	public readonly struct Line
 	{
 		public Line(Point start, Point end)
 		{
@@ -11,6 +11,6 @@
 		public Point Start { get; }
 		public Point End { get; }
 
-		public bool Equals(Line line) => Start.Equals(line.Start) && End.Equals(line.End);
+		public readonly bool Equals(Line line) => Start.Equals(line.Start) && End.Equals(line.End);
 	}
 }

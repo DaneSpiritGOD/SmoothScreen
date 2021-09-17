@@ -2,9 +2,15 @@
 
 namespace SmoothScreen
 {
-	struct MouseState
+	readonly struct MouseState
 	{
-		public Screener Screen { get; set; }
-		public Point Point { get; set; }
+		public MouseState(Screener screen, Point point)
+		{
+			Screen = screen;
+			Point = point;
+		}
+
+		public Screener Screen { get; }
+		public Point Point { get; }
 	}
 }
