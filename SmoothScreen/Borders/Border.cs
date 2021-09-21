@@ -5,296 +5,81 @@ using SmoothScreen.Borders;
 
 namespace SmoothScreen
 {
-	internal abstract class Border : IComparable<Border>
+	abstract class BorderBase : IComparable<BorderBase>
 	{
-		protected abstract int Order { get; }
-		
-		public Screener Owner { get; }
-		public Line Line { get; }
+		readonly Screener screener;
 
-		protected Border(Screener screen, Line line)
+		public BorderBase(Screener screener, BorderVector unit, Point location, int length)
 		{
-			EnsureConstructorParameters(screen, line);
-
-			Owner = screen;
-			Line = line;
+			this.screener = screener;
+			Unit = unit;
+			Location = location;
+			Length = length;
 		}
 
-		// should not change state inside the overridden method
-		protected abstract void EnsureConstructorParameters(Screener screen, Line line);
+		public BorderVector Unit { get; }
+		public Point Location { get; }
+		public int Length { get; }
 
-		protected bool IsSameType(Border other) => other.Order == Order;
+		protected abstract int CompareToCore(BorderBase other);
 
-		protected virtual int CompareToSameType(Border other) => throw new NotSupportedException();
-		protected virtual int CompareToDifferentType(Border other) => Order - other.Order;
-
-		public int CompareTo(Border other)
+		public int CompareTo(BorderBase other)
 		{
-			if (!other.Owner.Equals(Owner))
+			if (other.screener != screener)
 			{
 				throw new NotSameScreenException();
 			}
 
-			return IsSameType(other) ? CompareToSameType(other) : CompareToDifferentType(other);
-		}
-
-		protected abstract class SegmentBorder<TParent> : Border where TParent : Border
-		{
-			protected readonly TParent parent;
-
-			protected SegmentBorder(TParent parent, Line line) : base(parent.Owner, line)
+			if (other.GetType() != GetType())
 			{
-				this.parent = parent;
-
-				parent.EnsureConstructorParameters(parent.Owner, line);
-				EnsureSubsetOfParent();
+				throw new NotSameKindOfBorderException();
 			}
 
-			protected override void EnsureConstructorParameters(Screener screen, Line line) { }
-
-			protected abstract void EnsureSubsetOfParent();
-
-			protected abstract void EnsureSameAxisButNoOverlap(Border other);
-			protected abstract int CompareToDifferentTypeCore(Border other);
-
-			protected override int CompareToDifferentType(Border other)
-			{
-				EnsureSameAxisButNoOverlap(other);
-				return CompareToDifferentTypeCore(other);
-			}
-
-#if DEBUG
-			public override Border GetSegmentBorderForTest(Line line) => throw new NotSupportedException();
-#endif
+			return CompareToCore(other);
 		}
-
-#if DEBUG
-		public abstract Border GetSegmentBorderForTest(Line line);
-#endif
 	}
 
-	class TopBorder : Border
+	class Border : BorderBase, IComparable<Border>
 	{
-		protected override int Order => 100;
-
-		public TopBorder(Screener screen) : base(screen, screen.Bounds.GetTopLine())
+		public Border(Screener screener, BorderVector unit, Point location, int length) : base(screener, unit, location, length)
 		{
 		}
 
-		protected override void EnsureConstructorParameters(Screener screen, Line line)
+		public int CompareTo(Border other)
 		{
-			if (line.Start.Y != line.End.Y || line.Start.X >= line.End.X)
+			if (Unit == other.Unit)
+			{
+				throw new SameAxisBorderException();
+			}
+
+			return Unit.CompareTo(other.Unit);
+		}
+
+		protected override int CompareToCore(BorderBase other)
+		{
+			return CompareTo((Border)other);
+		}
+	}
+
+	class SegmentBorder : BorderBase, IComparable<SegmentBorder>
+	{
+		public SegmentBorder(Screener screener, BorderVector unit, Point location, int length) : base(screener, unit, location, length)
+		{
+		}
+
+		public int CompareTo(SegmentBorder other)
+		{
+			if (Unit != other.Unit)
 			{
 				throw new DistinctAxisBorderException();
 			}
+
+			//return Unit.CompareTo(other.Unit);
 		}
 
-		class SegmentTopBorder : SegmentBorder<TopBorder>
+		protected override int CompareToCore(BorderBase other)
 		{
-			protected override int Order => 150;
-
-			public SegmentTopBorder(TopBorder parent, Line line) : base(parent, line)
-			{
-			}
-
-			protected override void EnsureSubsetOfParent()
-			{
-				if (parent.GetStartY() != this.GetStartY() ||
-					parent.GetStartX() >= this.GetStartX() ||
-					parent.GetEndX() <= this.GetEndX())
-				{
-					throw new SegmentBorderNotSubsetOfParentException();
-				}
-			}
-
-			protected override void EnsureSameAxisButNoOverlap(Border other)
-			{
-				if (other.GetStartY() != this.GetStartY() ||
-					other.GetStartX() <= this.GetEndX() ||
-					other.GetEndX() >= this.GetStartX())
-				{
-					throw new OverlappedBorderException();
-				}
-			}
-
-			protected override int CompareToDifferentTypeCore(Border other) => this.GetStartX() - other.GetStartX();
+			return CompareTo((SegmentBorder)other);
 		}
-
-#if DEBUG
-		public override Border GetSegmentBorderForTest(Line line) => new SegmentTopBorder(this, line);
-#endif
-	}
-
-	class RightBorder : Border
-	{
-		protected override int Order => 200;
-
-		public RightBorder(Screener screen) : base(screen, screen.Bounds.GetRightLine())
-		{
-		}
-
-		protected override void EnsureConstructorParameters(Screener screen, Line line)
-		{
-			if (line.Start.X != line.End.X || line.Start.Y >= line.End.Y)
-			{
-				throw new DistinctAxisBorderException();
-			}
-		}
-
-		class SegmentRightBorder : SegmentBorder<RightBorder>
-		{
-			protected override int Order => 250;
-
-			public SegmentRightBorder(RightBorder parent, Line line) : base(parent, line)
-			{
-			}
-
-			protected override void EnsureSubsetOfParent()
-			{
-				if (parent.GetStartX() != this.GetStartX() ||
-					parent.GetStartY() >= this.GetStartY() ||
-					parent.GetEndY() <= this.GetEndY())
-				{
-					throw new SegmentBorderNotSubsetOfParentException();
-				}
-			}
-
-			protected override void EnsureSameAxisButNoOverlap(Border other)
-			{
-				if (other.GetStartX() != this.GetStartX() ||
-					other.GetStartY() <= this.GetEndY() ||
-					other.GetEndY() >= this.GetStartY())
-				{
-					throw new OverlappedBorderException();
-				}
-			}
-
-			protected override int CompareToDifferentTypeCore(Border other) => this.GetStartY() - other.GetStartY();
-		}
-
-#if DEBUG
-		public override Border GetSegmentBorderForTest(Line line) => new SegmentRightBorder(this, line);
-#endif
-	}
-
-	class BottomBorder : Border
-	{
-		protected override int Order => 300;
-
-		public BottomBorder(Screener screen) : base(screen, screen.Bounds.GetBottomLine())
-		{
-		}
-
-		protected override void EnsureConstructorParameters(Screener screen, Line line)
-		{
-			if (line.Start.Y != line.End.Y || line.Start.X <= line.End.X)
-			{
-				throw new DistinctAxisBorderException();
-			}
-		}
-
-		class SegmentBottomBorder : SegmentBorder<BottomBorder>
-		{
-			protected override int Order => 350;
-
-			public SegmentBottomBorder(BottomBorder parent, Line line) : base(parent, line)
-			{
-			}
-
-			protected override void EnsureSubsetOfParent()
-			{
-				if (parent.GetStartY() != this.GetStartY() ||
-					parent.GetStartX() <= this.GetStartX() ||
-					parent.GetEndX() >= this.GetEndX())
-				{
-					throw new SegmentBorderNotSubsetOfParentException();
-				}
-			}
-
-			protected override void EnsureSameAxisButNoOverlap(Border other)
-			{
-				if (other.GetStartY() != this.GetStartY() ||
-					other.GetStartX() >= this.GetEndX() ||
-					other.GetEndX() <= this.GetStartX())
-				{
-					throw new OverlappedBorderException();
-				}
-			}
-
-			protected override int CompareToDifferentTypeCore(Border other) => other.GetStartX() - this.GetStartX();
-		}
-
-#if DEBUG
-		public override Border GetSegmentBorderForTest(Line line) => new SegmentBottomBorder(this, line);
-#endif
-	}
-
-	class LeftBorder : Border
-	{
-		protected override int Order => 400;
-
-		public LeftBorder(Screener screen) : base(screen, screen.Bounds.GetLeftLine())
-		{
-		}
-
-		protected override void EnsureConstructorParameters(Screener screen, Line line)
-		{
-			if (line.Start.X != line.End.X || line.Start.Y <= line.End.Y)
-			{
-				throw new DistinctAxisBorderException();
-			}
-		}
-
-		class SegmentLeftBorder : SegmentBorder<LeftBorder>
-		{
-			protected override int Order => 450;
-
-			public SegmentLeftBorder(LeftBorder parent, Line line) : base(parent, line)
-			{
-			}
-
-			protected override void EnsureSubsetOfParent()
-			{
-				if (parent.GetStartX() != this.GetStartX() ||
-					parent.GetStartY() <= this.GetStartY() ||
-					parent.GetEndY() >= this.GetEndY())
-				{
-					throw new SegmentBorderNotSubsetOfParentException();
-				}
-			}
-
-			protected override void EnsureSameAxisButNoOverlap(Border other)
-			{
-				if (other.GetStartY() != this.GetStartY() ||
-					other.GetStartY() >= this.GetEndY() ||
-					other.GetEndY() <= this.GetStartY())
-				{
-					throw new OverlappedBorderException();
-				}
-			}
-
-			protected override int CompareToDifferentTypeCore(Border other) => other.GetStartY() - this.GetStartY();
-		}
-
-#if DEBUG
-		public override Border GetSegmentBorderForTest(Line line) => new SegmentLeftBorder(this, line);
-#endif
-	}
-
-	class NoneBorder : Border
-	{
-		static readonly Line LineForNone = new Line(new Point(int.MinValue, int.MinValue), new Point(int.MinValue, int.MinValue));
-
-		protected override int Order => int.MinValue;
-
-		public NoneBorder(Screener screen) : base(screen, LineForNone)
-		{
-		}
-
-		protected override void EnsureConstructorParameters(Screener screen, Line line) { }
-
-#if DEBUG
-		public override Border GetSegmentBorderForTest(Line line) => throw new NotSupportedException();
-#endif
 	}
 }

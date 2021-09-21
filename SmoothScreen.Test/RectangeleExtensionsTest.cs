@@ -6,27 +6,27 @@ namespace SmoothScreen.Test
 	class RectangeleExtensionsTest
 	{
 		[Test]
-		public void TestGetTop()
+		public void TestGetTopLeft()
 		{
-			Assert.That(rect.GetTopLine(), Is.EqualTo(new Line(0, 0, 99, 0)));
+			Assert.That(rect.GetTopLeft(), Is.EqualTo(new Point(0, 0)));
 		}
 
 		[Test]
-		public void TestGetRight()
+		public void TestGetTopRight()
 		{
-			Assert.That(rect.GetRightLine(), Is.EqualTo(new Line(99, 0, 99, 99)));
+			Assert.That(rect.GetTopRight(), Is.EqualTo(new Point(99, 0)));
 		}
 
 		[Test]
-		public void TestGetBottom()
+		public void TestGetBottomRight()
 		{
-			Assert.That(rect.GetBottomLine(), Is.EqualTo(new Line(99, 99, 0, 99)));
+			Assert.That(rect.GetBottomRight(), Is.EqualTo(new Point(99, 99)));
 		}
 
 		[Test]
-		public void TestGetLeft()
+		public void TestGetBottomLeft()
 		{
-			Assert.That(rect.GetLeftLine(), Is.EqualTo(new Line(0, 99, 0, 0)));
+			Assert.That(rect.GetBottomLeft(), Is.EqualTo(new Point(0, 99)));
 		}
 
 		Rectangle rect;
