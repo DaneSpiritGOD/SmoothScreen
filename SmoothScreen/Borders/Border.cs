@@ -1,25 +1,45 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using SmoothScreen.Borders;
 
 namespace SmoothScreen
 {
 	abstract class BorderBase : IComparable<BorderBase>
 	{
-		readonly Screener screener;
-
-		public BorderBase(Screener screener, BorderVector unit, Point location, int length)
-		{
-			this.screener = screener;
-			Unit = unit;
-			Location = location;
-			Length = length;
-		}
+		protected readonly Screener screener;
+		protected readonly BorderVector vector;
 
 		public BorderVector Unit { get; }
-		public Point Location { get; }
+		public Point StartPoint { get; }
+		readonly Point endPoint;
 		public int Length { get; }
+
+		public BorderBase(Screener screener, BorderVector unit, Point startPoint, int length)
+		{
+			if (!screener.Contains(startPoint))
+			{
+				throw new BorderException("location is not in screen");
+			}
+
+			if (length > screener.Width || length > screener.Height)
+			{
+				throw new BorderException("length is over bound");
+			}
+
+			var vector = (length - 1) * unit;
+			var endPointVector = new BorderVector(startPoint) + vector;
+			var endPoint = new Point(endPointVector.X, endPointVector.Y);
+			if (!screener.Contains(endPoint))
+			{
+				throw new BorderException("end point is not in screen");
+			}
+
+			this.screener = screener;
+			Unit = unit;
+			StartPoint = startPoint;
+			this.endPoint = endPoint;
+			Length = length;
+		}
 
 		protected abstract int CompareToCore(BorderBase other);
 
@@ -47,7 +67,7 @@ namespace SmoothScreen
 
 		public int CompareTo(Border other)
 		{
-			if (Unit == other.Unit)
+			if (Unit.Equals(other.Unit))
 			{
 				throw new SameAxisBorderException();
 			}
@@ -69,12 +89,11 @@ namespace SmoothScreen
 
 		public int CompareTo(SegmentBorder other)
 		{
-			if (Unit != other.Unit)
+			if (!Unit.Equals(other.Unit))
 			{
 				throw new DistinctAxisBorderException();
 			}
-
-			//return Unit.CompareTo(other.Unit);
+			
 		}
 
 		protected override int CompareToCore(BorderBase other)

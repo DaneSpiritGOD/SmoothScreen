@@ -6,6 +6,10 @@ namespace SmoothScreen
 	class Screener
 	{
 		public Rectangle Bounds { get; }
+		public int Width => Bounds.Width;
+		public int Height => Bounds.Height;
+		public bool Contains(Point point) => Bounds.Contains(point);
+
 		readonly int closeToBorderThreshold;
 		readonly int expandDistance;
 		readonly Rectangle _topLeftRect;
