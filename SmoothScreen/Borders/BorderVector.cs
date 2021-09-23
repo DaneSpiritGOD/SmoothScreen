@@ -91,7 +91,7 @@ namespace SmoothScreen.Borders
 		public readonly int CompareTo(BorderVector other)
 		{
 			var angle = this.angle - other.angle;
-			return angle.HasValue? (int)angle.Value : throw new NotSupportedException();
+			return angle.HasValue? (int)angle.Value : throw new BorderException("Only unit BorderVector can be compared.");
 		}
 
 		public readonly bool Equals(BorderVector other) => X == other.X && Y == other.Y && angle == other.angle;
