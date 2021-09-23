@@ -9,21 +9,21 @@ namespace SmoothScreen
 		protected readonly Screener screener;
 		protected readonly BorderVector vector;
 
+		protected readonly Point startPoint;
+		protected readonly Point endPoint;
 		public BorderVector Unit { get; }
-		public Point StartPoint { get; }
-		readonly Point endPoint;
 		public int Length { get; }
 
 		public BorderBase(Screener screener, BorderVector unit, Point startPoint, int length)
 		{
 			if (!screener.Contains(startPoint))
 			{
-				throw new BorderException("location is not in screen");
+				throw new BorderException("Location is not in screen.");
 			}
 
 			if (length > screener.Width || length > screener.Height)
 			{
-				throw new BorderException("length is over bound");
+				throw new BorderException("Length is over bound.");
 			}
 
 			var vector = (length - 1) * unit;
@@ -31,12 +31,12 @@ namespace SmoothScreen
 			var endPoint = new Point(endPointVector.X, endPointVector.Y);
 			if (!screener.Contains(endPoint))
 			{
-				throw new BorderException("end point is not in screen");
+				throw new BorderException("End point is not in screen.");
 			}
 
 			this.screener = screener;
 			Unit = unit;
-			StartPoint = startPoint;
+			this.startPoint = startPoint;
 			this.endPoint = endPoint;
 			Length = length;
 		}
@@ -47,12 +47,12 @@ namespace SmoothScreen
 		{
 			if (other.screener != screener)
 			{
-				throw new NotSameScreenException();
+				throw new BorderException("Same screen is required.");
 			}
 
 			if (other.GetType() != GetType())
 			{
-				throw new NotSameKindOfBorderException();
+				throw new BorderException("Border type is distinct.");
 			}
 
 			return CompareToCore(other);
@@ -69,7 +69,7 @@ namespace SmoothScreen
 		{
 			if (Unit.Equals(other.Unit))
 			{
-				throw new SameAxisBorderException();
+				throw new BorderException("Same axis is required.");
 			}
 
 			return Unit.CompareTo(other.Unit);
@@ -91,9 +91,23 @@ namespace SmoothScreen
 		{
 			if (!Unit.Equals(other.Unit))
 			{
-				throw new DistinctAxisBorderException();
+				throw new BorderException("Distinct axis.");
 			}
-			
+
+			var startVector = new BorderVector(startPoint, other.startPoint);
+			var startVectorLength = startVector.Length();
+			var startRelation = BorderVector.GetRelation(startVector, Unit);
+			switch (startRelation)
+			{
+				case BorderVectorRelation.SameLineSameDirection:
+					return startVectorLength >= Length ? -1 : throw new BorderException("Segment borders overlaps.");
+				case BorderVectorRelation.SameLineReverseDirection:
+					return other.Length >= startVectorLength ? 1 : throw new BorderException("Segment borders overlaps.");
+				case BorderVectorRelation.Orthometric:
+				case BorderVectorRelation.Other:
+				default:
+					throw new BorderException("Not in same line.");
+			}
 		}
 
 		protected override int CompareToCore(BorderBase other)
