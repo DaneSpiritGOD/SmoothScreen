@@ -76,17 +76,10 @@ namespace SmoothScreen.Borders
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly float Length()
-		{
-			var x = Dot(this, this);
-			return MathF.Sqrt(x);
-		}
+		public readonly float Length() => MathF.Sqrt(Dot(this, this));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly int LengthSquared()
-		{
-			return Dot(this, this);
-		}
+		public readonly int LengthSquared() => Dot(this, this);
 
 		public readonly int CompareTo(BorderVector other)
 		{
