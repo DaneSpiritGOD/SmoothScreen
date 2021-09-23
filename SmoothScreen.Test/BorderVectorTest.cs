@@ -94,5 +94,87 @@ namespace SmoothScreen.Test
 
 			Assert.That(BorderVector.Dot(vector1, vector2), Is.EqualTo(expectedResult));
 		}
+
+		[Test]
+		public void TestMultiply_Left()
+		{
+			var left = new BorderVector(1, 2);
+			var right = 3;
+
+			Assert.That(left * right, Is.EqualTo(new BorderVector(3, 6)));
+		}
+
+		[Test]
+		public void TestMultiply_Right()
+		{
+			var left = 3;
+			var right = new BorderVector(1, 2);
+
+			Assert.That(left * right, Is.EqualTo(new BorderVector(3, 6)));
+		}
+
+		[Test]
+		public void TestPlus()
+		{
+			var left = new BorderVector(1, 2);
+			var right = new BorderVector(3, 4);
+
+			Assert.That(left + right, Is.EqualTo(new BorderVector(4, 6)));
+		}
+
+		[Test]
+		public void TestMinus()
+		{
+			var left = new BorderVector(1, 2);
+			var right = new BorderVector(3, 4);
+
+			Assert.That(left - right, Is.EqualTo(new BorderVector(-2, -2)));
+		}
+
+		[Test]
+		public void TestLength()
+		{
+			var vector = new BorderVector(3, 4);
+			Assert.That(vector.Length(), Is.EqualTo(5));
+		}
+
+		[Test]
+		public void TestLengthSquared()
+		{
+			var vector = new BorderVector(3, 4);
+			Assert.That(vector.LengthSquared(), Is.EqualTo(25));
+		}
+
+		[Test]
+		public void TestGetRelation_Orthometric()
+		{
+			var vector1 = new BorderVector(3, 4);
+			var vector2 = new BorderVector(4, -3);
+			Assert.That(BorderVector.GetRelation(vector1, vector2), Is.EqualTo(BorderVectorRelation.Orthometric));
+		}
+
+		[Test]
+		public void TestGetRelation_Other()
+		{
+			var vector1 = new BorderVector(3, 4);
+			var vector2 = new BorderVector(3, -3);
+			Assert.That(BorderVector.GetRelation(vector1, vector2), Is.EqualTo(BorderVectorRelation.Other));
+		}
+
+		[Test]
+		public void TestGetRelation_SameLineSameDirection()
+		{
+			var vector1 = new BorderVector(3, 4);
+			var vector2 = new BorderVector(6, 8);
+			Assert.That(BorderVector.GetRelation(vector1, vector2), Is.EqualTo(BorderVectorRelation.SameLineSameDirection));
+		}
+
+		[Test]
+		public void TestGetRelation_SameLineReverseDirection()
+		{
+			var vector1 = new BorderVector(3, 4);
+			var vector2 = new BorderVector(-3, -4);
+			Assert.That(BorderVector.GetRelation(vector1, vector2), Is.EqualTo(BorderVectorRelation.SameLineReverseDirection));
+		}
 	}
 }
