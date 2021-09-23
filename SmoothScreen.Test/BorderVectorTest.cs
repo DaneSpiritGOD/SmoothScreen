@@ -5,36 +5,15 @@ namespace SmoothScreen.Test
 {
 	class BorderVectorTest
 	{
-		[Test]
-		public void TestTopUnit()
+		[TestCase("top", 1, 0)]
+		[TestCase("right", 0, 1)]
+		[TestCase("bottom", -1, 0)]
+		[TestCase("left", 0, -1)]
+		public void TestTopUnit(string flag, int expectedX, int expectedY)
 		{
-			var unit = BorderVector.TopUnit;
-			Assert.That(unit.X, Is.EqualTo(1));
-			Assert.That(unit.Y, Is.EqualTo(0));
-		}
-
-		[Test]
-		public void TestRightUnit()
-		{
-			var unit = BorderVector.RightUnit;
-			Assert.That(unit.X, Is.EqualTo(0));
-			Assert.That(unit.Y, Is.EqualTo(1));
-		}
-
-		[Test]
-		public void TestBottomUnit()
-		{
-			var unit = BorderVector.BottomUnit;
-			Assert.That(unit.X, Is.EqualTo(-1));
-			Assert.That(unit.Y, Is.EqualTo(0));
-		}
-
-		[Test]
-		public void TestLeftUnit()
-		{
-			var unit = BorderVector.LeftUnit;
-			Assert.That(unit.X, Is.EqualTo(0));
-			Assert.That(unit.Y, Is.EqualTo(-1));
+			var unit = flag.ConvertToUnit();
+			Assert.That(unit.X, Is.EqualTo(expectedX));
+			Assert.That(unit.Y, Is.EqualTo(expectedY));
 		}
 
 		[Test]
@@ -55,34 +34,26 @@ namespace SmoothScreen.Test
 			Assert.That(vector1, Is.Not.EqualTo(vector2));
 		}
 
-		[Test]
-		public void TestCompare()
+		[TestCase("top", "right")]
+		[TestCase("right", "bottom")]
+		[TestCase("bottom", "left")]
+		public void TestCanCompare(string leftOperand, string rightOperand)
 		{
-			Assert.That(BorderVector.TopUnit, Is.LessThan(BorderVector.RightUnit));
-			Assert.That(BorderVector.RightUnit, Is.LessThan(BorderVector.BottomUnit));
-			Assert.That(BorderVector.BottomUnit, Is.LessThan(BorderVector.LeftUnit));
+			Assert.That(leftOperand.ConvertToUnit(), Is.LessThan(rightOperand.ConvertToUnit()));
 		}
 
-		[Test]
-		public void TestCannotCompare()
+		[TestCase("top")]
+		[TestCase("right")]
+		[TestCase("bottom")]
+		[TestCase("left")]
+		[TestCase("")]
+		public void TestCannotCompare(string flag)
 		{
 			var vector1 = new BorderVector(1, 1);
+			var vector2 = !string.IsNullOrEmpty(flag) ? flag.ConvertToUnit() : new BorderVector(1, 1);
 
-			Assert.That(() => BorderVector.TopUnit.CompareTo(vector1), Throws.TypeOf<BorderException>());
-			Assert.That(() => vector1.CompareTo(BorderVector.TopUnit), Throws.TypeOf<BorderException>());
-
-			Assert.That(() => BorderVector.RightUnit.CompareTo(vector1), Throws.TypeOf<BorderException>());
-			Assert.That(() => vector1.CompareTo(BorderVector.RightUnit), Throws.TypeOf<BorderException>());
-
-			Assert.That(() => BorderVector.BottomUnit.CompareTo(vector1), Throws.TypeOf<BorderException>());
-			Assert.That(() => vector1.CompareTo(BorderVector.BottomUnit), Throws.TypeOf<BorderException>());
-
-			Assert.That(() => BorderVector.LeftUnit.CompareTo(vector1), Throws.TypeOf<BorderException>());
-			Assert.That(() => vector1.CompareTo(BorderVector.LeftUnit), Throws.TypeOf<BorderException>());
-
-			var vector2 = new BorderVector(1, 1);
-			Assert.That(() => vector1.CompareTo(vector2), Throws.TypeOf<BorderException>());
 			Assert.That(() => vector2.CompareTo(vector1), Throws.TypeOf<BorderException>());
+			Assert.That(() => vector1.CompareTo(vector2), Throws.TypeOf<BorderException>());
 		}
 
 		[TestCase(1, 2, 3, 4, 11)]
