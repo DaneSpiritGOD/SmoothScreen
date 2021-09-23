@@ -16,6 +16,17 @@ namespace SmoothScreen
 
 		public BorderBase(Screener screener, BorderVector unit, Point startPoint, int length)
 		{
+			switch (unit)
+			{
+				case var _ when unit.Equals(BorderVector.TopUnit):
+				case var _ when unit.Equals(BorderVector.RightUnit):
+				case var _ when unit.Equals(BorderVector.BottomUnit):
+				case var _ when unit.Equals(BorderVector.LeftUnit):
+					break;
+				default:
+					throw new BorderException("Non-unit BorderVector is passed as unit.");
+			}
+			
 			if (!screener.Contains(startPoint))
 			{
 				throw new BorderException("Location is not in screen.");

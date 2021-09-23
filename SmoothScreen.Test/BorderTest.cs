@@ -5,14 +5,7 @@ using SmoothScreen.Borders;
 
 namespace SmoothScreen.Test
 {
-	class BorderTest
+	class BorderTest : BorderBaseTest<Border>
 	{
-		Screener screener;
-
-		[SetUp]
-		public void SetUp()
-		{
-			screener = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
-		}
 	}
 }
