@@ -4,7 +4,7 @@ using SmoothScreen.Borders;
 
 namespace SmoothScreen
 {
-	abstract class BorderBase : IComparable<BorderBase>
+	abstract class BorderBase
 	{
 		protected readonly Screener screener;
 		protected readonly BorderVector vector;
@@ -29,7 +29,7 @@ namespace SmoothScreen
 			
 			if (!screener.Contains(startPoint))
 			{
-				throw new BorderException("Location is not in screen.");
+				throw new BorderException("Start point is not in screen.");
 			}
 
 			if (length > screener.Width || length > screener.Height)
@@ -51,23 +51,6 @@ namespace SmoothScreen
 			this.endPoint = endPoint;
 			Length = length;
 		}
-
-		protected abstract int CompareToCore(BorderBase other);
-
-		public int CompareTo(BorderBase other)
-		{
-			if (other.screener != screener)
-			{
-				throw new BorderException("Same screen is required.");
-			}
-
-			if (other.GetType() != GetType())
-			{
-				throw new BorderException("Border type is distinct.");
-			}
-
-			return CompareToCore(other);
-		}
 	}
 
 	class Border : BorderBase, IComparable<Border>
@@ -78,17 +61,17 @@ namespace SmoothScreen
 
 		public int CompareTo(Border other)
 		{
+			if (other.screener != screener)
+			{
+				throw new BorderException("Same screen is required.");
+			}
+
 			if (Unit.Equals(other.Unit))
 			{
 				throw new BorderException("Same axis is required.");
 			}
 
 			return Unit.CompareTo(other.Unit);
-		}
-
-		protected override int CompareToCore(BorderBase other)
-		{
-			return CompareTo((Border)other);
 		}
 	}
 
@@ -100,6 +83,11 @@ namespace SmoothScreen
 
 		public int CompareTo(SegmentBorder other)
 		{
+			if (other.screener != screener)
+			{
+				throw new BorderException("Same screen is required.");
+			}
+
 			if (!Unit.Equals(other.Unit))
 			{
 				throw new BorderException("Distinct axis.");
@@ -119,11 +107,6 @@ namespace SmoothScreen
 				default:
 					throw new BorderException("Not in same line.");
 			}
-		}
-
-		protected override int CompareToCore(BorderBase other)
-		{
-			return CompareTo((SegmentBorder)other);
 		}
 	}
 }

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using SmoothScreen.Borders;
 
@@ -24,9 +20,34 @@ namespace SmoothScreen.Test
 		[Test]
 		public void TestConstructor_IncorrectUnit()
 		{
-			var tie = Assert.Catch<TargetInvocationException>(() => CreateBorder(new BorderVector(10, 20), 0, 0, 100));
+			TestBorderException(new BorderVector(10, 20), 0, 0, 100, "Non-unit BorderVector is passed as unit.");
+		}
+
+		[TestCase(-1)]
+		[TestCase(100)]
+		public void TestConstructor_StartPointNotContained(int startX)
+		{
+			TestBorderException(BorderVector.TopUnit, startX, 0, 100, "Start point is not in screen.");
+		}
+
+		[Test]
+		public void TestConstructor_LengthOverWidthOrHeight()
+		{
+			TestBorderException(BorderVector.TopUnit, 0, 0, 101, "Length is over bound.");
+		}
+
+		[TestCase(1, 100)]
+		[TestCase(99, 2)]
+		public void TestConstructor_EndPointNotContained(int startX, int length)
+		{
+			TestBorderException(BorderVector.TopUnit, startX, 0, length, "End point is not in screen.");
+		}
+
+		void TestBorderException(BorderVector borderVector, int startX, int startY, int length, string expectedMessage)
+		{
+			var tie = Assert.Catch<TargetInvocationException>(() => CreateBorder(borderVector, startX, startY, length));
 			Assert.That(tie.InnerException, Is.TypeOf<BorderException>());
-			Assert.That(tie.InnerException.Message, Is.EqualTo("Non-unit BorderVector is passed as unit."));
+			Assert.That(tie.InnerException.Message, Is.EqualTo(expectedMessage));
 		}
 
 		protected Screener screener;
