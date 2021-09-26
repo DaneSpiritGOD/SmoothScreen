@@ -6,7 +6,7 @@ using SmoothScreen.Borders;
 
 namespace SmoothScreen.Test
 {
-	abstract class BorderBaseTest<T> where T : BorderBase
+	abstract class BorderBaseTest<T> where T : BorderBase, IComparable<T>
 	{
 		[TestCase("top", 0, 0, 100)]
 		[TestCase("right", 99, 0, 100)]
@@ -20,51 +20,65 @@ namespace SmoothScreen.Test
 		[Test]
 		public void TestConstructor_IncorrectUnit()
 		{
-			TestBorderException(new BorderVector(10, 20), 0, 0, 100, "Non-unit BorderVector is passed as unit.");
+			TestConstructorException(new BorderVector(10, 20), 0, 0, 100, "Non-unit BorderVector is passed as unit.");
 		}
 
 		[TestCase(-1)]
 		[TestCase(100)]
 		public void TestConstructor_StartPointNotContained(int startX)
 		{
-			TestBorderException(BorderVector.TopUnit, startX, 0, 100, "Start point is not in screen.");
+			TestConstructorException(BorderVector.TopUnit, startX, 0, 100, "Start point is not in screen.");
 		}
 
 		[Test]
 		public void TestConstructor_LengthOverWidthOrHeight()
 		{
-			TestBorderException(BorderVector.TopUnit, 0, 0, 101, "Length is over bound.");
+			TestConstructorException(BorderVector.TopUnit, 0, 0, 101, "Length is over bound.");
 		}
 
 		[TestCase(1, 100)]
 		[TestCase(99, 2)]
 		public void TestConstructor_EndPointNotContained(int startX, int length)
 		{
-			TestBorderException(BorderVector.TopUnit, startX, 0, length, "End point is not in screen.");
+			TestConstructorException(BorderVector.TopUnit, startX, 0, length, "End point is not in screen.");
 		}
 
-		void TestBorderException(BorderVector borderVector, int startX, int startY, int length, string expectedMessage)
+		[Test]
+		public void TestCompare_NotSameScreen()
+		{
+			var border1 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);
+
+			var screener2 = new Screener(new Rectangle(0, 0, 100, 200), 5, 10);
+			var border2 = CreateBorder(screener2, BorderVector.TopUnit, new Point(0, 0), 100);
+
+			TestCompareException(border1, border2, "Same screen is required.");
+		}
+
+		void TestConstructorException(BorderVector borderVector, int startX, int startY, int length, string expectedMessage)
 		{
 			var tie = Assert.Catch<TargetInvocationException>(() => CreateBorder(borderVector, startX, startY, length));
 			Assert.That(tie.InnerException, Is.TypeOf<BorderException>());
 			Assert.That(tie.InnerException.Message, Is.EqualTo(expectedMessage));
 		}
 
-		protected Screener screener;
-
-		[SetUp]
-		public void SetUp()
+		protected void TestCompareException(T border1, T border2, string expectedMessage)
 		{
-			screener = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
+			var be = Assert.Catch<BorderException>(() => border1.CompareTo(border2));
+			Assert.That(be.Message, Is.EqualTo(expectedMessage));
 		}
 
-		protected T CreateBorder(BorderVector unit, Point startPoint, int length)
+		static protected Screener screener = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
+
+		static protected T CreateBorder(Screener screener, BorderVector unit, Point startPoint, int length)
 			=> (T)Activator.CreateInstance(typeof(T), screener, unit, startPoint, length);
 
-		protected T CreateBorder(BorderVector unit, int startX, int startY, int length)
+		static protected T CreateBorder(BorderVector unit, Point startPoint, int length)
+			=> (T)Activator.CreateInstance(typeof(T), screener, unit, startPoint, length);
+
+		static protected T CreateBorder(BorderVector unit, int startX, int startY, int length)
 			=> CreateBorder(unit, new Point(startX, startY), length);
 
-		protected T CreateBorder(string unit, int startX, int startY, int length)
+		static protected T CreateBorder(string unit, int startX, int startY, int length)
 			=> CreateBorder(unit.ConvertToUnit(), new Point(startX, startY), length);
 	}
 }

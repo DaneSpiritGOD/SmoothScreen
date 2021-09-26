@@ -61,14 +61,14 @@ namespace SmoothScreen
 
 		public int CompareTo(Border other)
 		{
-			if (other.screener != screener)
+			if (!other.screener.Equals(screener))
 			{
 				throw new BorderException("Same screen is required.");
 			}
 
 			if (Unit.Equals(other.Unit))
 			{
-				throw new BorderException("Same axis is required.");
+				throw new BorderException("Distinct axis is required.");
 			}
 
 			return Unit.CompareTo(other.Unit);
@@ -83,14 +83,14 @@ namespace SmoothScreen
 
 		public int CompareTo(SegmentBorder other)
 		{
-			if (other.screener != screener)
+			if (!other.screener.Equals(screener))
 			{
 				throw new BorderException("Same screen is required.");
 			}
 
 			if (!Unit.Equals(other.Unit))
 			{
-				throw new BorderException("Distinct axis.");
+				throw new BorderException("Same axis is required.");
 			}
 
 			var startVector = new BorderVector(startPoint, other.startPoint);
