@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using SmoothScreen.Borders;
 
 namespace SmoothScreen.Test
@@ -146,6 +147,15 @@ namespace SmoothScreen.Test
 			var vector1 = new BorderVector(3, 4);
 			var vector2 = new BorderVector(-3, -4);
 			Assert.That(BorderVector.GetRelation(vector1, vector2), Is.EqualTo(BorderVectorRelation.SameLineReverseDirection));
+		}
+
+		[TestCase(0, 0, -3, -4)]
+		[TestCase(-3, -4, 0, 0)]
+		public void TestGetRelation_Zero(int startX1, int startY1, int startX2, int startY2)
+		{
+			var vector1 = new BorderVector(startX1, startY1);
+			var vector2 = new BorderVector(startX2, startY2);
+			Assert.That(() => BorderVector.GetRelation(vector1, vector2), Throws.TypeOf<NotSupportedException>());
 		}
 	}
 }

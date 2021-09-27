@@ -94,6 +94,11 @@ namespace SmoothScreen
 			}
 
 			var startVector = new BorderVector(startPoint, other.startPoint);
+			if (startVector.IsZero)
+			{
+				throw new BorderException("Segment borders overlaps.");
+			}
+
 			var startVectorLength = startVector.Length();
 			var startRelation = BorderVector.GetRelation(startVector, Unit);
 			switch (startRelation)
@@ -101,7 +106,7 @@ namespace SmoothScreen
 				case BorderVectorRelation.SameLineSameDirection:
 					return startVectorLength >= Length ? -1 : throw new BorderException("Segment borders overlaps.");
 				case BorderVectorRelation.SameLineReverseDirection:
-					return other.Length >= startVectorLength ? 1 : throw new BorderException("Segment borders overlaps.");
+					return startVectorLength >= other.Length ? 1 : throw new BorderException("Segment borders overlaps.");
 				case BorderVectorRelation.Orthometric:
 				case BorderVectorRelation.Other:
 				default:

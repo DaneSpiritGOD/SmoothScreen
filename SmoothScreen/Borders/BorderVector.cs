@@ -50,8 +50,15 @@ namespace SmoothScreen.Borders
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static BorderVector operator -(BorderVector left, BorderVector right) => new BorderVector(left.X - right.X, left.Y - right.Y);
 
+		internal bool IsZero => X == 0 && Y == 0;
+
 		internal static BorderVectorRelation GetRelation(BorderVector vector1, BorderVector vector2)
 		{
+			if (vector1.IsZero || vector2.IsZero)
+			{
+				throw new NotSupportedException();
+			}
+
 			var dot = Dot(vector1, vector2);
 			if (dot == 0)
 			{
