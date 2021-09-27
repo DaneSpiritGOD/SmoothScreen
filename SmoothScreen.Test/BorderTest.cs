@@ -8,7 +8,7 @@ namespace SmoothScreen.Test
 	class BorderTest : BorderBaseTest<Border>
 	{
 		[Test]
-		public void TestCompare_DistinctUnit()
+		public void TestCompare_RequireDistinctUnit()
 		{
 			var border1 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);
 			var border2 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);
