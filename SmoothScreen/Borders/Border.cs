@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using SmoothScreen.Borders;
 
@@ -7,11 +8,8 @@ namespace SmoothScreen
 	abstract class BorderBase
 	{
 		protected readonly Screener screener;
-		protected readonly BorderVector vector;
-
-		protected readonly Point startPoint;
-		protected readonly Point endPoint;
 		public BorderVector Unit { get; }
+		protected readonly Point startPoint;
 		public int Length { get; }
 
 		public BorderBase(Screener screener, BorderVector unit, Point startPoint, int length)
@@ -48,9 +46,17 @@ namespace SmoothScreen
 			this.screener = screener;
 			Unit = unit;
 			this.startPoint = startPoint;
-			this.endPoint = endPoint;
 			Length = length;
 		}
+
+		public override bool Equals(object obj)
+			=> obj is BorderBase @base &&
+			EqualityComparer<Screener>.Default.Equals(screener, @base.screener) &&
+			EqualityComparer<BorderVector>.Default.Equals(Unit, @base.Unit) &&
+			startPoint.Equals(@base.startPoint) &&
+			Length == @base.Length;
+
+		public override int GetHashCode() => HashCode.Combine(screener, Unit, startPoint, Length);
 	}
 
 	class Border : BorderBase, IComparable<Border>
@@ -77,7 +83,8 @@ namespace SmoothScreen
 
 	class SegmentBorder : BorderBase, IComparable<SegmentBorder>
 	{
-		public SegmentBorder(Screener screener, BorderVector unit, Point location, int length) : base(screener, unit, location, length)
+		public SegmentBorder(Screener screener, BorderVector unit, Point startPoint, int length)
+			: base(screener, unit, startPoint, length)
 		{
 		}
 
