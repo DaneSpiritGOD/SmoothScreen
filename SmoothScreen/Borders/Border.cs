@@ -65,6 +65,8 @@ namespace SmoothScreen
 		{
 		}
 
+		public BorderCollection<SegmentBorder> Segments { get; } = new BorderCollection<SegmentBorder>();
+
 		public int CompareTo(Border other)
 		{
 			if (!other.screener.Equals(screener))
