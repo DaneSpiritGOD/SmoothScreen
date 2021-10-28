@@ -22,12 +22,12 @@ namespace SmoothScreen.Borders
 
 		static int BinarySearchToInsert(IList<T> items, int index, int length, T value, IComparer<T> comparer)
 		{
-			int num = index;
-			int num2 = index + length - 1;
+			var num = index;
+			var num2 = index + length - 1;
 			while (num <= num2)
 			{
-				int num3 = num + (num2 - num >> 1);
-				int num4 = comparer.Compare(items[num3], value);
+				var num3 = num + (num2 - num >> 1);
+				var num4 = comparer.Compare(items[num3], value);
 				if (num4 == 0)
 				{
 					return num3;

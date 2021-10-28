@@ -15,18 +15,20 @@ namespace SmoothScreen.Test
 		[TestCase(1)]
 		[TestCase(2)]
 		[TestCase(3)]
-		public void TestAdd_Insert(int indexToAdd)
+		public void TestAdd_Single(int indexToAdd)
 		{
 			var collection = new BorderCollection<T>();
 			for (var index = borders.Length - 1; index >= 0; --index)
 			{
-				if (index == indexToAdd)
+				if (index != indexToAdd)
 				{
 					continue;
 				}
 
 				collection.Add(borders[index]);
 			}
+
+			Assert.That(collection, Is.EqualTo(new [] { borders[indexToAdd] }));
 		}
 
 		protected T[] borders;
