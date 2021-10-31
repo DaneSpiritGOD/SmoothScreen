@@ -17,6 +17,7 @@ namespace SmoothScreen.Test
 		[TestCase(3)]
 		public void TestAdd_Single(int indexToAdd)
 		{
+			// Arrange & Act
 			var collection = new BorderCollection<T>();
 			for (var index = borders.Length - 1; index >= 0; --index)
 			{
@@ -28,6 +29,7 @@ namespace SmoothScreen.Test
 				collection.Add(borders[index]);
 			}
 
+			// Assert
 			Assert.That(collection, Is.EqualTo(new [] { borders[indexToAdd] }));
 		}
 
@@ -45,7 +47,23 @@ namespace SmoothScreen.Test
 
 	class BorderCollectionTest : BorderCollectionTest<Border>
 	{
-		protected override Border[] CreateBorders(Screener screener) 
+		[TestCase(0)]
+		[TestCase(1)]
+		[TestCase(2)]
+		[TestCase(3)]
+		public void TestAdd_SameUnit(int indexToAdd)
+		{
+			// Arrange
+			var collection = new BorderCollection<Border>();
+
+			// Act
+			collection.Add(borders[indexToAdd]);
+
+			// Assert
+			Assert.That(() => collection.Add(borders[indexToAdd]), Throws.TypeOf<BorderException>());
+		}
+
+		protected override Border[] CreateBorders(Screener screener)
 			=> new[]
 			{
 				new Border(screener, BorderVector.TopUnit, new Point(0, 0), 100),
