@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using SmoothScreen.Borders;
 
@@ -11,26 +9,17 @@ namespace SmoothScreen.Test
 {
 	abstract class BorderCollectionTest<T> where T : BorderBase
 	{
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(2)]
-		[TestCase(3)]
-		public void TestAdd_Single(int indexToAdd)
+		public virtual void TestAdd_AllSequence(int[] indicesToAdd)
 		{
 			// Arrange & Act
 			var collection = new BorderCollection<T>();
-			for (var index = borders.Length - 1; index >= 0; --index)
+			for (var index = 0; index < indicesToAdd.Length; ++index)
 			{
-				if (index != indexToAdd)
-				{
-					continue;
-				}
-
 				collection.Add(borders[index]);
 			}
 
 			// Assert
-			Assert.That(collection, Is.EqualTo(new [] { borders[indexToAdd] }));
+			Assert.That(collection, Is.EqualTo(indicesToAdd.OrderBy(x => x).Select(x => borders[x])));
 		}
 
 		protected T[] borders;
@@ -39,18 +28,21 @@ namespace SmoothScreen.Test
 		public void SetUp()
 		{
 			var screener = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
-			borders = CreateBorders(screener);
+			borders = CreateOrderedBorders(screener);
 		}
 
-		protected abstract T[] CreateBorders(Screener screener);
+		protected abstract T[] CreateOrderedBorders(Screener screener);
 	}
 
 	class BorderCollectionTest : BorderCollectionTest<Border>
 	{
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(2)]
-		[TestCase(3)]
+		[TestCaseSource(typeof(SequenceGenerator), nameof(SequenceGenerator.CreateAllPossibleSequences), new object[] { 4 })]
+		public override void TestAdd_AllSequence(int[] indicesToAdd)
+		{
+			base.TestAdd_AllSequence(indicesToAdd);
+		}
+
+		[TestCaseSource(typeof(SequenceGenerator), nameof(SequenceGenerator.CreateSequenceForSingle))]
 		public void TestAdd_SameUnit(int indexToAdd)
 		{
 			// Arrange
@@ -63,7 +55,7 @@ namespace SmoothScreen.Test
 			Assert.That(() => collection.Add(borders[indexToAdd]), Throws.TypeOf<BorderException>());
 		}
 
-		protected override Border[] CreateBorders(Screener screener)
+		protected override Border[] CreateOrderedBorders(Screener screener)
 			=> new[]
 			{
 				new Border(screener, BorderVector.TopUnit, new Point(0, 0), 100),
@@ -72,4 +64,40 @@ namespace SmoothScreen.Test
 				new Border(screener, BorderVector.LeftUnit, new Point(0, 99), 100),
 			};
 	}
+
+	//class SegmentBorderTest : BorderCollectionTest<SegmentBorder>
+	//{
+	//	readonly SegmentBorder[] orderedBorders;
+
+	//	public SegmentBorderTest(SegmentBorder[] orderedBorders)
+	//	{
+	//		this.orderedBorders = orderedBorders;
+	//	}
+
+	//	public void TestAdd_Overlapped(int indexToAdd)
+	//	{
+	//		// Arrange
+	//		var collection = new BorderCollection<Border>();
+
+	//		// Act
+	//		collection.Add(borders[indexToAdd]);
+
+	//		// Assert
+	//		Assert.That(() => collection.Add(borders[indexToAdd]), Throws.TypeOf<BorderException>());
+	//	}
+
+	//	public void TestAdd_DifferentKindUnit(int indexToAdd)
+	//	{
+	//		// Arrange
+	//		var collection = new BorderCollection<Border>();
+
+	//		// Act
+	//		collection.Add(borders[indexToAdd]);
+
+	//		// Assert
+	//		Assert.That(() => collection.Add(borders[indexToAdd]), Throws.TypeOf<BorderException>());
+	//	}
+
+	//	protected override Border[] CreateOrderedBorders(Screener screener) => orderedBorders;
+	//}
 }

@@ -57,6 +57,8 @@ namespace SmoothScreen
 			Length == @base.Length;
 
 		public override int GetHashCode() => HashCode.Combine(screener, Unit, startPoint, Length);
+
+		public override string ToString() => $"S{screener} U{Unit} P{startPoint} L{Length}";
 	}
 
 	class Border : BorderBase, IComparable<Border>

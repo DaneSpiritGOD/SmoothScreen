@@ -95,5 +95,7 @@ namespace SmoothScreen.Borders
 		}
 
 		public readonly bool Equals(BorderVector other) => X == other.X && Y == other.Y && angle == other.angle;
+
+		public override string ToString() => $"[{X}, {Y}, {angle}]";
 	}
 }
