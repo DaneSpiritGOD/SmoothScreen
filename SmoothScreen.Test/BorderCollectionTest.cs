@@ -36,13 +36,13 @@ namespace SmoothScreen.Test
 
 	class BorderCollectionTest : BorderCollectionTest<Border>
 	{
-		[TestCaseSource(typeof(SequenceGenerator), nameof(SequenceGenerator.CreateAllPossibleSequences), new object[] { 4 })]
+		[TestCaseSource(typeof(ArrangementGenerator), nameof(ArrangementGenerator.CreateAll), new object[] { 4 })]
 		public override void TestAdd_AllSequence(int[] indicesToAdd)
 		{
 			base.TestAdd_AllSequence(indicesToAdd);
 		}
 
-		[TestCaseSource(typeof(SequenceGenerator), nameof(SequenceGenerator.CreateSequenceForSingle))]
+		[TestCaseSource(typeof(ArrangementGenerator), nameof(ArrangementGenerator.CreateForSingleElement))]
 		public void TestAdd_SameUnit(int indexToAdd)
 		{
 			// Arrange
