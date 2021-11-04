@@ -6,34 +6,13 @@ namespace SmoothScreen.Test
 {
 	class SequenceGeneratorTest
 	{
-		[Test]
-		public void TestCreate_PickUpZero()
+		[TestCase(0, 0)]
+		[TestCase(0, 3)]
+		[TestCase(3, 0)]
+		public void TestCreate_ZeroParameter(int n, int r)
 		{
-			// Arrange & Act
-			var sequences = ArrangementGenerator.Create(3, 0);
-
 			// Assert
-			Assert.That(sequences, Has.Exactly(0).Items);
-		}
-
-		[Test]
-		public void TestCreate_ZeroItems()
-		{
-			// Arrange & Act
-			var sequences = ArrangementGenerator.Create(0, 3);
-
-			// Assert
-			Assert.That(sequences, Has.Exactly(0).Items);
-		}
-
-		[Test]
-		public void TestCreate_AllZero()
-		{
-			// Arrange & Act
-			var sequences = ArrangementGenerator.Create(0, 0);
-
-			// Assert
-			Assert.That(sequences, Has.Exactly(0).Items);
+			Assert.That(() => ArrangementGenerator.Create(n, r), Throws.TypeOf<ArgumentOutOfRangeException>());
 		}
 
 		[TestCase(1, new[] { 0, 1, 2})]

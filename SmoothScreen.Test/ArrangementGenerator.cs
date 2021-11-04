@@ -28,6 +28,11 @@ namespace SmoothScreen.Test
 
 		static IEnumerable<IEnumerable<int>> Create(IEnumerable<int> picked, int n, int r)
 		{
+			if (r <= 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(r));
+			}
+
 			if (picked.Count() >= r)
 			{
 				return new[] { picked };
@@ -47,6 +52,11 @@ namespace SmoothScreen.Test
 
 		static IEnumerable<int> GetAvailableToPickUp(IEnumerable<int> picked, int n)
 		{
+			if (n <= 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(n));
+			}
+
 			for (var index = 0; index < n; ++index)
 			{
 				if (picked.Contains(index))
