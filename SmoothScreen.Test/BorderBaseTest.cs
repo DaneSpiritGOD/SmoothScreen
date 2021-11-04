@@ -30,12 +30,6 @@ namespace SmoothScreen.Test
 			TestConstructorException(BorderVector.TopUnit, startX, 0, 100, "Start point is not in screen.");
 		}
 
-		[Test]
-		public void TestConstructor_LengthOverWidthOrHeight()
-		{
-			TestConstructorException(BorderVector.TopUnit, 0, 0, 101, "Length is over bound.");
-		}
-
 		[TestCase(1, 100)]
 		[TestCase(99, 2)]
 		public void TestConstructor_EndPointNotContained(int startX, int length)

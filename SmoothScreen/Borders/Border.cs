@@ -30,11 +30,6 @@ namespace SmoothScreen
 				throw new BorderException("Start point is not in screen.");
 			}
 
-			if (length > screener.Width || length > screener.Height)
-			{
-				throw new BorderException("Length is over bound.");
-			}
-
 			var vector = (length - 1) * unit;
 			var endPointVector = new BorderVector(startPoint) + vector;
 			var endPoint = new Point(endPointVector.X, endPointVector.Y);

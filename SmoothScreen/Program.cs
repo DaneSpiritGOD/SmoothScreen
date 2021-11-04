@@ -11,7 +11,6 @@ namespace SmoothScreen
 {
 	class Program
 	{
-		static readonly MouseState lastState = new MouseState();
 		static readonly Logger logger = LogManager.GetCurrentClassLogger();
 		static ScreenCollection screens;
 		static ScreenManager manager;
