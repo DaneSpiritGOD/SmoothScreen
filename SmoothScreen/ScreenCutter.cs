@@ -10,6 +10,12 @@ namespace SmoothScreen
 	{
 		public ScreenCutter(ScreenCollection screens)
 		{
+
+		}
+
+		public void Go()
+		{
+
 		}
 	}
 }
