@@ -78,6 +78,15 @@ namespace SmoothScreen
 
 			return Unit.CompareTo(other.Unit);
 		}
+
+		public static bool DoesClingTo(Border border1, Border border2)
+		{
+			var relation = BorderVector.GetRelation(border1.Unit, border2.Unit);
+			if (relation != BorderVectorRelation.SameLineReverseDirection)
+			{
+				return false;
+			}
+		}
 	}
 
 	class SegmentBorder : BorderBase, IComparable<SegmentBorder>
