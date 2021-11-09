@@ -157,5 +157,22 @@ namespace SmoothScreen.Test
 			var vector2 = new BorderVector(startX2, startY2);
 			Assert.That(() => BorderVector.GetRelation(vector1, vector2), Throws.TypeOf<NotSupportedException>());
 		}
+
+		[TestCase("top")]
+		[TestCase("right")]
+		[TestCase("bottom")]
+		[TestCase("left")]
+		public void TestIsAxis_True(string flag)
+		{
+			var unit = flag.ConvertToUnit();
+			Assert.That(BorderVector.IsAxis(unit), Is.True);
+		}
+
+		[Test]
+		public void TestIsAxis_False()
+		{
+			var unit = new BorderVector(1, 1);
+			Assert.That(BorderVector.IsAxis(unit), Is.False);
+		}
 	}
 }

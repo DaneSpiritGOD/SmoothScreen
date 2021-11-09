@@ -94,6 +94,12 @@ namespace SmoothScreen.Borders
 			return angle.HasValue? (int)angle.Value : throw new BorderException("Only unit BorderVector can be compared.");
 		}
 
+		public static bool IsAxis(BorderVector vector)
+			=> vector.Equals(TopUnit) ||
+			vector.Equals(RightUnit) ||
+			vector.Equals(BottomUnit) ||
+			vector.Equals(LeftUnit);
+
 		public readonly bool Equals(BorderVector other) => X == other.X && Y == other.Y && angle == other.angle;
 
 		public override string ToString() => $"[{X}, {Y}, {angle}]";

@@ -81,11 +81,25 @@ namespace SmoothScreen
 
 		public static bool DoesClingTo(Border border1, Border border2)
 		{
+			if (!BorderVector.IsAxis(border1.Unit))
+			{
+				throw new ArgumentException($"{nameof(border1)} is not axis border.");
+			}
+
+			if (!BorderVector.IsAxis(border2.Unit))
+			{
+				throw new ArgumentException($"{nameof(border2)} is not axis border.");
+			}
+
 			var relation = BorderVector.GetRelation(border1.Unit, border2.Unit);
 			if (relation != BorderVectorRelation.SameLineReverseDirection)
 			{
 				return false;
 			}
+
+			var dot1 = BorderVector.Dot(new BorderVector(border1.startPoint), new BorderVector(border1.Unit.Y, border1.Unit.X));
+			var dot2 = BorderVector.Dot(new BorderVector(border2.startPoint), new BorderVector(border2.Unit.Y, border2.Unit.X));
+			return Math.Abs(dot1 + dot2) == 1;
 		}
 	}
 
