@@ -9,9 +9,9 @@ namespace SmoothScreen.Test
 	abstract class BorderBaseTest<T> where T : BorderBase, IComparable<T>
 	{
 		[TestCase("top", 0, 0, 100)]
-		[TestCase("right", 99, 0, 100)]
-		[TestCase("bottom", 99, 99, 100)]
-		[TestCase("left", 0, 99, 100)]
+		[TestCase("right", 99, 0, 50)]
+		[TestCase("bottom", 99, 49, 100)]
+		[TestCase("left", 0, 49, 50)]
 		public void TestConstructor_Unit(string unit, int startX, int startY, int length)
 		{
 			Assert.DoesNotThrow(() => CreateBorder(unit, startX, startY, length));
@@ -42,7 +42,7 @@ namespace SmoothScreen.Test
 		{
 			var border1 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);
 
-			var screener2 = new Screener(new Rectangle(0, 0, 100, 200), 5, 10);
+			var screener2 = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
 			var border2 = CreateBorder(screener2, BorderVector.TopUnit, new Point(0, 0), 100);
 
 			TestCompareException(border1, border2, "Same screen is required.");
@@ -61,7 +61,7 @@ namespace SmoothScreen.Test
 			Assert.That(be.Message, Is.EqualTo(expectedMessage));
 		}
 
-		static protected Screener screener = new Screener(new Rectangle(0, 0, 100, 100), 5, 10);
+		static protected Screener screener = new Screener(new Rectangle(0, 0, 100, 50), 5, 10);
 
 		static protected T CreateBorder(Screener screener, BorderVector unit, Point startPoint, int length)
 			=> (T)Activator.CreateInstance(typeof(T), screener, unit, startPoint, length);

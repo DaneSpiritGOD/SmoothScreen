@@ -10,12 +10,12 @@ namespace SmoothScreen.Test
 		public void TestCompare_RequireSameUnit()
 		{
 			var border1 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);
-			var border2 = CreateBorder(BorderVector.RightUnit, new Point(99, 0), 100);
+			var border2 = CreateBorder(BorderVector.RightUnit, new Point(99, 0), 50);
 			TestCompareException(border1, border2, "Same axis is required.");
 		}
 
-		[TestCase(0, 99, Description = "Orthometric")]
-		[TestCase(10, 99, Description = "Other")]
+		[TestCase(0, 49, Description = "Orthometric")]
+		[TestCase(10, 49, Description = "Other")]
 		public void TestCompare_NotInSameLine(int startX2, int startY2)
 		{
 			var border1 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);

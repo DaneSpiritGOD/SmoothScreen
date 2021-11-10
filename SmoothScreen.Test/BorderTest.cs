@@ -21,14 +21,20 @@ namespace SmoothScreen.Test
 			Assert.That(border1.CompareTo(border2), Is.EqualTo(exptectedResult));
 		}
 
+		[Test]
+		public void TestDoesClingTo_ArgumentException()
+		{
+
+		}
+
 		static IEnumerable<TestCaseData> GetSourcesForCompare()
 		{
 			var units = new[]
 			{
 				("top", 0, 0, 100, 0),
-				("right", 99, 0, 100, 90),
-				("bottom", 99, 99, 100, 180),
-				("left", 0, 99, 100, 270),
+				("right", 99, 0, 50, 90),
+				("bottom", 99, 49, 100, 180),
+				("left", 0, 49, 50, 270),
 			};
 
 			foreach (var unit1 in units)
