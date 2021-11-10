@@ -14,15 +14,9 @@ namespace SmoothScreen
 
 		public BorderBase(Screener screener, BorderVector unit, Point startPoint, int length)
 		{
-			switch (unit)
+			if (BorderVector.IsAxis(unit))
 			{
-				case var _ when unit.Equals(BorderVector.TopUnit):
-				case var _ when unit.Equals(BorderVector.RightUnit):
-				case var _ when unit.Equals(BorderVector.BottomUnit):
-				case var _ when unit.Equals(BorderVector.LeftUnit):
-					break;
-				default:
-					throw new BorderException("Non-unit BorderVector is passed as unit.");
+				throw new BorderException("Non-unit BorderVector is passed as unit.");
 			}
 			
 			if (!screener.Contains(startPoint))
@@ -79,18 +73,8 @@ namespace SmoothScreen
 			return Unit.CompareTo(other.Unit);
 		}
 
-		public static bool DoesClingTo(Border border1, Border border2)
+		public static bool DoesAxisClingTo(Border border1, Border border2)
 		{
-			if (!BorderVector.IsAxis(border1.Unit))
-			{
-				throw new ArgumentException($"{nameof(border1)} is not axis border.");
-			}
-
-			if (!BorderVector.IsAxis(border2.Unit))
-			{
-				throw new ArgumentException($"{nameof(border2)} is not axis border.");
-			}
-
 			var relation = BorderVector.GetRelation(border1.Unit, border2.Unit);
 			if (relation != BorderVectorRelation.SameLineReverseDirection)
 			{
@@ -99,7 +83,21 @@ namespace SmoothScreen
 
 			var dot1 = BorderVector.Dot(new BorderVector(border1.startPoint), new BorderVector(border1.Unit.Y, border1.Unit.X));
 			var dot2 = BorderVector.Dot(new BorderVector(border2.startPoint), new BorderVector(border2.Unit.Y, border2.Unit.X));
-			return Math.Abs(dot1 + dot2) == 1;
+			if (Math.Abs(dot1 + dot2) != 1)
+			{
+				return false;
+			}
+
+			var dot3 = BorderVector.Dot(new BorderVector(border1.startPoint), border1.Unit);
+			var dot4 = BorderVector.Dot(new BorderVector(border2.startPoint), border2.Unit);
+			var startPointDistance = dot3 + dot4;
+			if (startPointDistance > 0)
+			{
+				return false;
+			}
+
+			var startVector = new BorderVector(border1.startPoint, border2.startPoint);
+			return Math.Abs(startPointDistance) <= startVector.Length();
 		}
 	}
 

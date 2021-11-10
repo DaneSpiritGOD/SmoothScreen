@@ -61,7 +61,7 @@ namespace SmoothScreen.Test
 			Assert.That(be.Message, Is.EqualTo(expectedMessage));
 		}
 
-		static protected Screener screener = new Screener(new Rectangle(0, 0, 100, 50), 5, 10);
+		static readonly protected Screener screener = new Screener(new Rectangle(0, 0, 100, 50), 5, 10);
 
 		static protected T CreateBorder(Screener screener, BorderVector unit, Point startPoint, int length)
 			=> (T)Activator.CreateInstance(typeof(T), screener, unit, startPoint, length);

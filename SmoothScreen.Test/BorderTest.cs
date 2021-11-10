@@ -22,7 +22,11 @@ namespace SmoothScreen.Test
 		}
 
 		[Test]
-		public void TestDoesClingTo_ArgumentException()
+		public void TestDoesClingTo()
+		{
+		}
+
+		static IEnumerable<TestCaseData> GetScreenBorders()
 		{
 
 		}
