@@ -5,6 +5,7 @@
 		Orthometric,
 		SameLineSameDirection,
 		SameLineReverseDirection,
-		Other
+		AcuteAngle,
+		ObtuseAngle,
 	}
 }

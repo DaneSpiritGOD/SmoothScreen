@@ -126,11 +126,19 @@ namespace SmoothScreen.Test
 		}
 
 		[Test]
-		public void TestGetRelation_Other()
+		public void TestGetRelation_AcuteAngle()
 		{
 			var vector1 = new BorderVector(3, 4);
-			var vector2 = new BorderVector(3, -3);
-			Assert.That(BorderVector.GetRelation(vector1, vector2), Is.EqualTo(BorderVectorRelation.Other));
+			var vector2 = new BorderVector(3, -2);
+			Assert.That(BorderVector.GetRelation(vector1, vector2), Is.EqualTo(BorderVectorRelation.AcuteAngle));
+		}
+
+		[Test]
+		public void TestGetRelation_Obtuse()
+		{
+			var vector1 = new BorderVector(3, 4);
+			var vector2 = new BorderVector(3, -4);
+			Assert.That(BorderVector.GetRelation(vector1, vector2), Is.EqualTo(BorderVectorRelation.ObtuseAngle));
 		}
 
 		[Test]

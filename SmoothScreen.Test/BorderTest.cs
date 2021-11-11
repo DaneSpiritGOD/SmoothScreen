@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using NUnit.Framework;
 using SmoothScreen.Borders;
@@ -21,14 +22,26 @@ namespace SmoothScreen.Test
 			Assert.That(border1.CompareTo(border2), Is.EqualTo(exptectedResult));
 		}
 
-		[Test]
+		[TestCaseSource(nameof(GetScreenBorders))]
 		public void TestDoesClingTo()
 		{
 		}
 
 		static IEnumerable<TestCaseData> GetScreenBorders()
 		{
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 10, 10), 0, 0), Array.Empty<string>());
 
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 50, 10), 0, 0), Array.Empty<string>());
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 51, 10), 0, 0), Array.Empty<string>());
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 52, 10), 0, 0), Array.Empty<string>());
+
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 10, 50), 0, 0), Array.Empty<string>());
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 10, 51), 0, 0), Array.Empty<string>());
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 10, 52), 0, 0), Array.Empty<string>());
+
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 50, 50), 0, 0), Array.Empty<string>());
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 51, 51), 0, 0), Array.Empty<string>());
+			yield return new TestCaseData(new Screener(new Rectangle(-50, -50, 52, 52), 0, 0), Array.Empty<string>());
 		}
 
 		static IEnumerable<TestCaseData> GetSourcesForCompare()

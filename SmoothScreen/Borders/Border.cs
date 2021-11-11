@@ -73,7 +73,7 @@ namespace SmoothScreen
 			return Unit.CompareTo(other.Unit);
 		}
 
-		public static bool DoesAxisClingTo(Border border1, Border border2)
+		public static bool SegmentIfClingToEachOther(Border border1, Border border2)
 		{
 			var relation = BorderVector.GetRelation(border1.Unit, border2.Unit);
 			if (relation != BorderVectorRelation.SameLineReverseDirection)
@@ -81,23 +81,24 @@ namespace SmoothScreen
 				return false;
 			}
 
-			var dot1 = BorderVector.Dot(new BorderVector(border1.startPoint), new BorderVector(border1.Unit.Y, border1.Unit.X));
-			var dot2 = BorderVector.Dot(new BorderVector(border2.startPoint), new BorderVector(border2.Unit.Y, border2.Unit.X));
-			if (Math.Abs(dot1 + dot2) != 1)
-			{
-				return false;
-			}
-
-			var dot3 = BorderVector.Dot(new BorderVector(border1.startPoint), border1.Unit);
-			var dot4 = BorderVector.Dot(new BorderVector(border2.startPoint), border2.Unit);
-			var startPointDistance = dot3 + dot4;
-			if (startPointDistance > 0)
-			{
-				return false;
-			}
-
 			var startVector = new BorderVector(border1.startPoint, border2.startPoint);
-			return Math.Abs(startPointDistance) <= startVector.Length();
+			if (startVector.IsZero)
+			{
+				return false;
+			}
+
+			var startRelation = BorderVector.GetRelation(startVector, border1.Unit);
+			if (startRelation != BorderVectorRelation.AcuteAngle)
+			{
+				return false;
+			}
+
+			if (startVector.Length() >= (border1.Length + border2.Length))
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
 
@@ -134,8 +135,6 @@ namespace SmoothScreen
 					return startVectorLength >= Length ? -1 : throw new BorderException("Segment borders overlaps.");
 				case BorderVectorRelation.SameLineReverseDirection:
 					return startVectorLength >= other.Length ? 1 : throw new BorderException("Segment borders overlaps.");
-				case BorderVectorRelation.Orthometric:
-				case BorderVectorRelation.Other:
 				default:
 					throw new BorderException("Not in same line.");
 			}
