@@ -14,7 +14,7 @@ namespace SmoothScreen
 
 		public BorderBase(Screener screener, BorderVector unit, Point startPoint, int length)
 		{
-			if (BorderVector.IsAxis(unit))
+			if (!BorderVector.IsAxis(unit))
 			{
 				throw new BorderException("Non-unit BorderVector is passed as unit.");
 			}

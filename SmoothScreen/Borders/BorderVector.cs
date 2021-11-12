@@ -72,8 +72,8 @@ namespace SmoothScreen.Borders
 			var isSameLength = dot * dot == vectorLengthProduct;
 			return dot switch
 			{
-				> 0 => isSameLength ? BorderVectorRelation.SameLineSameDirection : BorderVectorRelation.ObtuseAngle,
-				< 0 => isSameLength ? BorderVectorRelation.SameLineReverseDirection : BorderVectorRelation.AcuteAngle,
+				> 0 => isSameLength ? BorderVectorRelation.SameLineSameDirection : BorderVectorRelation.AcuteAngle,
+				< 0 => isSameLength ? BorderVectorRelation.SameLineReverseDirection : BorderVectorRelation.ObtuseAngle,
 				_ => throw new NotImplementedException(),
 			};
 		}
