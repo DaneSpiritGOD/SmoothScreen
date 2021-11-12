@@ -49,9 +49,9 @@ namespace SmoothScreen.Test
 			var units = new[]
 			{
 				("top", 0, 0, 100, 0),
-				("right", 99, 0, 50, 90),
-				("bottom", 99, 49, 100, 180),
-				("left", 0, 49, 50, 270),
+				("right", 99, 0, 50, 9000),
+				("bottom", 99, 49, 100, 18000),
+				("left", 0, 49, 50, 27000),
 			};
 
 			foreach (var unit1 in units)

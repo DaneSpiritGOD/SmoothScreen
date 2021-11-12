@@ -18,6 +18,12 @@ namespace SmoothScreen.Test
 		}
 
 		[Test]
+		public void TestAngle()
+		{
+			// TODO
+		}
+
+		[Test]
 		public void TestEquals_True()
 		{
 			var vector1 = new BorderVector(1, 1);
@@ -41,20 +47,6 @@ namespace SmoothScreen.Test
 		public void TestCanCompare(string leftOperand, string rightOperand)
 		{
 			Assert.That(leftOperand.ConvertToUnit(), Is.LessThan(rightOperand.ConvertToUnit()));
-		}
-
-		[TestCase("top")]
-		[TestCase("right")]
-		[TestCase("bottom")]
-		[TestCase("left")]
-		[TestCase("")]
-		public void TestCannotCompare(string flag)
-		{
-			var vector1 = new BorderVector(1, 1);
-			var vector2 = !string.IsNullOrEmpty(flag) ? flag.ConvertToUnit() : new BorderVector(1, 1);
-
-			Assert.That(() => vector2.CompareTo(vector1), Throws.TypeOf<BorderException>());
-			Assert.That(() => vector1.CompareTo(vector2), Throws.TypeOf<BorderException>());
 		}
 
 		[TestCase(1, 2, 3, 4, 11)]

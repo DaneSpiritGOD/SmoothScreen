@@ -8,23 +8,20 @@ namespace SmoothScreen.Borders
 	{
 		public int X { get; }
 		public int Y { get; }
-		readonly double? angle;
+		public double Angle { get; }
 
-		public static readonly BorderVector TopUnit = new BorderVector(1, 0, 0);
-		public static readonly BorderVector RightUnit = new BorderVector(0, 1, 90);
-		public static readonly BorderVector BottomUnit = new BorderVector(-1, 0, 180);
-		public static readonly BorderVector LeftUnit = new BorderVector(0, -1, 270);
-
-		BorderVector(int x, int y, double angle) : this(x, y)
-		{
-			this.angle = angle;
-		}
+		public static readonly BorderVector TopUnit = new BorderVector(1, 0);
+		public static readonly BorderVector RightUnit = new BorderVector(0, 1);
+		public static readonly BorderVector BottomUnit = new BorderVector(-1, 0);
+		public static readonly BorderVector LeftUnit = new BorderVector(0, -1);
 
 		public BorderVector(int x, int y)
 		{
 			X = x;
 			Y = y;
-			angle = null;
+
+			var angle = Math.Atan2(y, x);
+			Angle = angle < 0 ? angle + 2* Math.PI : angle;
 		}
 
 		public BorderVector(Point point) : this(point.X, point.Y)
@@ -85,10 +82,7 @@ namespace SmoothScreen.Borders
 		public readonly int LengthSquared() => Dot(this, this);
 
 		public readonly int CompareTo(BorderVector other)
-		{
-			var angle = this.angle - other.angle;
-			return angle.HasValue? (int)angle.Value : throw new BorderException("Only unit BorderVector can be compared.");
-		}
+			=> (int)Math.Truncate((Angle - other.Angle) / Math.PI * 180 * 100);
 
 		public static bool IsAxis(BorderVector vector)
 			=> vector.Equals(TopUnit) ||
@@ -96,8 +90,8 @@ namespace SmoothScreen.Borders
 			vector.Equals(BottomUnit) ||
 			vector.Equals(LeftUnit);
 
-		public readonly bool Equals(BorderVector other) => X == other.X && Y == other.Y && angle == other.angle;
+		public readonly bool Equals(BorderVector other) => X == other.X && Y == other.Y;
 
-		public override string ToString() => $"[{X}, {Y}, {angle}]";
+		public override string ToString() => $"[{X}, {Y}, {Angle}]";
 	}
 }
