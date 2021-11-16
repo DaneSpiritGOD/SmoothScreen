@@ -81,24 +81,39 @@ namespace SmoothScreen
 				return false;
 			}
 
+			if (CalculateUnitDistance() != 1)
+			{
+				return false;
+			}
+
 			var startVector = new BorderVector(border1.startPoint, border2.startPoint);
-			if (startVector.IsZero)
+			var angle = border1.Unit.Angle - startVector.Angle;
+			if (angle <=0 || angle >= 90)
 			{
 				return false;
 			}
 
-			var startRelation = BorderVector.GetRelation(startVector, border1.Unit);
-			if (startRelation != BorderVectorRelation.AcuteAngle)
-			{
-				return false;
-			}
-
-			if (startVector.Length() >= (border1.Length + border2.Length))
+			if (BorderVector.Dot(startVector, border1.Unit) >= (border1.Length + border2.Length))
 			{
 				return false;
 			}
 
 			return true;
+
+			int CalculateUnitDistance()
+			{
+				switch (border1.Unit)
+				{
+					case var top1 when top1.Equals(BorderVector.TopUnit):
+					case var right1 when right1.Equals(BorderVector.RightUnit):
+						return Math.Abs(border1.startPoint.Y - border2.startPoint.Y);
+					case var bottom1 when bottom1.Equals(BorderVector.BottomUnit):
+					case var left1 when left1.Equals(BorderVector.LeftUnit):
+						return Math.Abs(border1.startPoint.X - border2.startPoint.X);
+					default:
+						throw new NotSupportedException();
+				}
+			}
 		}
 	}
 
