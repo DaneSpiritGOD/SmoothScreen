@@ -17,10 +17,24 @@ namespace SmoothScreen.Test
 			Assert.That(unit.Y, Is.EqualTo(expectedY));
 		}
 
-		[Test]
-		public void TestAngle()
+		[TestCase("top", 0)]
+		[TestCase("right", 90)]
+		[TestCase("bottom", 180)]
+		[TestCase("left", 270)]
+		public void TestAngle_Unit(string flag, double expectedAngle)
 		{
-			// TODO
+			var unit = flag.ConvertToUnit();
+			Assert.That(unit.Angle, Is.EqualTo(expectedAngle).Within(0.01d));
+		}
+
+		[TestCase(1, 1, 45)]
+		[TestCase(-1, 1, 135)]
+		[TestCase(-1, -1, 225)]
+		[TestCase(1, -1, 315)]
+		public void TestAngle_NonUnit(int x, int y, double expectedAngle)
+		{
+			var vector = new BorderVector(x, y);
+			Assert.That(vector.Angle, Is.EqualTo(expectedAngle).Within(0.01d));
 		}
 
 		[Test]

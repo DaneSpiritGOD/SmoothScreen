@@ -21,7 +21,7 @@ namespace SmoothScreen.Borders
 			Y = y;
 
 			var angle = Math.Atan2(y, x);
-			Angle = angle < 0 ? angle + 2* Math.PI : angle;
+			Angle = (angle < 0 ? angle + 2* Math.PI : angle) / Math.PI * 180d;
 		}
 
 		public BorderVector(Point point) : this(point.X, point.Y)
@@ -82,7 +82,7 @@ namespace SmoothScreen.Borders
 		public readonly int LengthSquared() => Dot(this, this);
 
 		public readonly int CompareTo(BorderVector other)
-			=> (int)Math.Truncate((Angle - other.Angle) / Math.PI * 180 * 100);
+			=> (int)Math.Truncate((Angle - other.Angle) * 100);
 
 		public static bool IsUnit(BorderVector vector)
 			=> vector.Equals(TopUnit) ||
