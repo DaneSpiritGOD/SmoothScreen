@@ -162,17 +162,17 @@ namespace SmoothScreen.Test
 		[TestCase("right")]
 		[TestCase("bottom")]
 		[TestCase("left")]
-		public void TestIsAxis_True(string flag)
+		public void TestIsUnit_True(string flag)
 		{
 			var unit = flag.ConvertToUnit();
-			Assert.That(BorderVector.IsAxis(unit), Is.True);
+			Assert.That(BorderVector.IsUnit(unit), Is.True);
 		}
 
 		[Test]
-		public void TestIsAxis_False()
+		public void TestIsUnit_False()
 		{
 			var unit = new BorderVector(1, 1);
-			Assert.That(BorderVector.IsAxis(unit), Is.False);
+			Assert.That(BorderVector.IsUnit(unit), Is.False);
 		}
 	}
 }

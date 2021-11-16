@@ -84,7 +84,7 @@ namespace SmoothScreen.Borders
 		public readonly int CompareTo(BorderVector other)
 			=> (int)Math.Truncate((Angle - other.Angle) / Math.PI * 180 * 100);
 
-		public static bool IsAxis(BorderVector vector)
+		public static bool IsUnit(BorderVector vector)
 			=> vector.Equals(TopUnit) ||
 			vector.Equals(RightUnit) ||
 			vector.Equals(BottomUnit) ||

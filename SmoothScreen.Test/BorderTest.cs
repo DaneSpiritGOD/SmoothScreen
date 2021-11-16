@@ -13,7 +13,7 @@ namespace SmoothScreen.Test
 		{
 			var border1 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);
 			var border2 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);
-			TestCompareException(border1, border2, "Distinct axis is required.");
+			TestCompareException(border1, border2, "Distinct unit is required.");
 		}
 
 		[TestCaseSource(nameof(GetSourcesForCompare))]

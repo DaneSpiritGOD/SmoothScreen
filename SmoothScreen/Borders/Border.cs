@@ -14,7 +14,7 @@ namespace SmoothScreen
 
 		public BorderBase(Screener screener, BorderVector unit, Point startPoint, int length)
 		{
-			if (!BorderVector.IsAxis(unit))
+			if (!BorderVector.IsUnit(unit))
 			{
 				throw new BorderException("Non-unit BorderVector is passed as unit.");
 			}
@@ -67,7 +67,7 @@ namespace SmoothScreen
 
 			if (Unit.Equals(other.Unit))
 			{
-				throw new BorderException("Distinct axis is required.");
+				throw new BorderException("Distinct unit is required.");
 			}
 
 			return Unit.CompareTo(other.Unit);
@@ -118,7 +118,7 @@ namespace SmoothScreen
 
 			if (!Unit.Equals(other.Unit))
 			{
-				throw new BorderException("Same axis is required.");
+				throw new BorderException("Same unit is required.");
 			}
 
 			var startVector = new BorderVector(startPoint, other.startPoint);

@@ -11,7 +11,7 @@ namespace SmoothScreen.Test
 		{
 			var border1 = CreateBorder(BorderVector.TopUnit, new Point(0, 0), 100);
 			var border2 = CreateBorder(BorderVector.RightUnit, new Point(99, 0), 50);
-			TestCompareException(border1, border2, "Same axis is required.");
+			TestCompareException(border1, border2, "Same unit is required.");
 		}
 
 		[TestCase(0, 49, Description = "Orthometric")]
