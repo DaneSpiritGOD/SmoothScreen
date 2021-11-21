@@ -27,6 +27,10 @@ namespace SmoothScreen.Borders
 
 		public bool IsZero => Start.Equals(End);
 
+		public LineVector(int x, int y) : this(Point.Empty, new Point(x, y))
+		{
+		}
+
 		public LineVector(Point point) : this(Point.Empty, point)
 		{
 		}
