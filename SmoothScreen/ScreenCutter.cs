@@ -15,32 +15,32 @@ namespace SmoothScreen
 			this.screens = screens ?? throw new ArgumentNullException(nameof(screens));
 		}
 
-		public void Run()
-		{
-			var hasMet = new HashSet<(Screener, Screener)>();
+		//public void Run()
+		//{
+		//	var hasMet = new HashSet<(Screener, Screener)>();
 
-			foreach (var screen1 in screens)
-			{
-				foreach (var screen2 in screens)
-				{
-					if (hasMet.Contains((screen2, screen1)))
-					{
-						continue;
-					}
+		//	foreach (var screen1 in screens)
+		//	{
+		//		foreach (var screen2 in screens)
+		//		{
+		//			if (hasMet.Contains((screen2, screen1)))
+		//			{
+		//				continue;
+		//			}
 
-					Cut(screen1, screen2);
+		//			Cut(screen1, screen2);
 
-					hasMet.Add((screen1, screen2)); // (A, B)
-				}
-			}
-		}
+		//			hasMet.Add((screen1, screen2)); // (A, B)
+		//		}
+		//	}
+		//}
 
-		static void Cut(Screener screen1, Screener screen2)
-		{
-			var left = screen1.LeftBorder;
-			var right = screen2.RightBorder;
+		//static void Cut(Screener screen1, Screener screen2)
+		//{
+		//	var left = screen1.LeftBorder;
+		//	var right = screen2.RightBorder;
 
-			Cut(screen2, screen1);
-		}
+		//	Cut(screen2, screen1);
+		//}
 	}
 }

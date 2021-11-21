@@ -37,17 +37,17 @@ namespace SmoothScreen
 				expandDistance);
 		}
 
-		Border top;
-		public Border TopBorder => top ??= new Border(this, BorderVector.TopUnit, Bounds.GetTopLeft(), Width);
+		//Border top;
+		//public Border TopBorder => top ??= new Border(this, LineVector.TopUnit, Bounds.GetTopLeft(), Width);
 
-		Border right;
-		public Border RightBorder => right ??= new Border(this, BorderVector.RightUnit, Bounds.GetTopRight(), Height);
+		//Border right;
+		//public Border RightBorder => right ??= new Border(this, LineVector.RightUnit, Bounds.GetTopRight(), Height);
 
-		Border bottom;
-		public Border BottomBorder => bottom ??= new Border(this, BorderVector.BottomUnit, Bounds.GetBottomRight(), Width);
+		//Border bottom;
+		//public Border BottomBorder => bottom ??= new Border(this, LineVector.BottomUnit, Bounds.GetBottomRight(), Width);
 
-		Border left;
-		public Border LeftBorder => left ??= new Border(this, BorderVector.LeftUnit, Bounds.GetBottomLeft(), Height);
+		//Border left;
+		//public Border LeftBorder => left ??= new Border(this, LineVector.LeftUnit, Bounds.GetBottomLeft(), Height);
 
 		public override string ToString() => this == None ? nameof(None) : Bounds.ToString();
 
